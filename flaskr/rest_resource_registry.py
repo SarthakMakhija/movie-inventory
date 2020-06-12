@@ -1,6 +1,6 @@
 from flask_restful import Api
 
-from flaskr.resources.movie_snapshots import MovieSnapshots
+from flaskr.resource.movie_snapshots import MovieSnapshots
 
 
 class RestResourceRegistry:
