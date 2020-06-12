@@ -27,7 +27,7 @@ class MovieSnapshotTest(unittest.TestCase):
         movie_snapshots_service.return_value.get_all.return_value = [{}]
         response = self.__test_client.get("/movie-snapshots")
         movie_snapshots = response.json
-        self.assertEqual(len(movie_snapshots), 1)
+        self.assertEqual(1, len(movie_snapshots))
 
     @patch("flaskr.resource.movie_snapshots.MovieSnapshotsService")
     def test_should_assert_all_snapshots(self, movie_snapshots_service):
@@ -37,4 +37,4 @@ class MovieSnapshotTest(unittest.TestCase):
 
         response = self.__test_client.get("/movie-snapshots")
         actual_movie_snapshot_views = response.json
-        self.assertEqual(actual_movie_snapshot_views, expected_movie_snapshots_views)
+        self.assertEqual(expected_movie_snapshots_views, actual_movie_snapshot_views)
