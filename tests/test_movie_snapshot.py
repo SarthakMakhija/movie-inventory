@@ -9,3 +9,6 @@ class MovieSnapshotTest(unittest.TestCase):
         response = TestClient.create().get("/movie-snapshots")
         self.assertEqual(200, response.status_code)
 
+    def test_should_return_no_snapshots_given_no_snapshots_exist(self):
+        response = TestClient.create().get("/movie-snapshots")
+        self.assertEqual([], response.json)
