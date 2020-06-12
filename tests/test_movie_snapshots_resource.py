@@ -25,7 +25,7 @@ class MovieSnapshotResourceTest(unittest.TestCase):
 
     @patch("flaskr.resource.movie_snapshots_resource.MovieSnapshotsService")
     def test_should_assert_total_snapshots_to_equal_1(self, movie_snapshots_service):
-        movie_snapshots_service.return_value.get_all.return_value = [{}]
+        movie_snapshots_service.return_value.get_all.return_value = [MovieSnapshot("3 idiots", "Rajkumar Hirani")]
         response = self.__test_client.get("/movie-snapshots")
         movie_snapshots = response.json
         self.assertEqual(1, len(movie_snapshots))
