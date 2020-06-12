@@ -1,7 +1,7 @@
-from flaskr import application_ref
+from main import app
 
 
 class TestClient:
     @staticmethod
     def create():
-        return application_ref.app.test_client()
+        return app.app.test_client()
