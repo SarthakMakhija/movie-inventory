@@ -1,11 +1,6 @@
 import unittest
 from unittest.mock import patch
 
-from flaskr.configuration import Configuration
-from flaskr.flask_application import Application
-
-Application.create_app(Configuration)
-
 from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.service.movie_snapshots_service import MovieSnapshotsService
 

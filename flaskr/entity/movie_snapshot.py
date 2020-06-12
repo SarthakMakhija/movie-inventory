@@ -1,6 +1,4 @@
-from flaskr.flask_application import Application
-
-db = Application.instance().db
+from flaskr.entity import db
 
 
 class MovieSnapshot(db.Model):
