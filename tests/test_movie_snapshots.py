@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from flask_restful import marshal
 
+from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.view.movie_snapshots_view import MovieSnapshotsView
 from tests.fixtures.test_client import TestClient
 
@@ -31,9 +32,11 @@ class MovieSnapshotTest(unittest.TestCase):
 
     @patch("flaskr.resource.movie_snapshots.MovieSnapshotsService")
     def test_should_assert_all_snapshots(self, movie_snapshots_service):
-        movie_snapshot_views = [MovieSnapshotsView("3 idiots", "Rajkumar Hirani")]
-        expected_movie_snapshots_views = marshal(movie_snapshot_views, fields=MovieSnapshotsView.DISPLAYABLE_FIELDS)
-        movie_snapshots_service.return_value.get_all.return_value = expected_movie_snapshots_views
+        expected_movie_snapshots_views = marshal([MovieSnapshotsView("3 idiots", "Rajkumar Hirani")],
+                                                 fields=MovieSnapshotsView.DISPLAYABLE_FIELDS)
+
+        movie_snapshots = [MovieSnapshot("3 idiots", "Rajkumar Hirani")]
+        movie_snapshots_service.return_value.get_all.return_value = movie_snapshots
 
         response = self.__test_client.get("/movie-snapshots")
         actual_movie_snapshot_views = response.json
