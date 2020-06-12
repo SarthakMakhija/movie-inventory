@@ -13,7 +13,7 @@ class MovieSnapshotTests(unittest.TestCase):
 
     def test_should_return_no_snapshots_given_no_snapshots_exist(self):
         response = self.__test_client.get("/movie-snapshots")
-        self.assertEqual([], response.json)
+        self.assertEqual([{}], response.json)
 
     def test_should_assert_total_snapshots_to_equal_1(self):
         response = self.__test_client.get("/movie-snapshots")
