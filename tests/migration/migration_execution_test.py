@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname("tests"), '.')))
 
 from migration_execution import MigrationExecution
-from tests.configuration.TestConfiguration import TestConfiguration
+from tests.configuration.configuration_test import TestConfiguration
 
 
 class TestMigrationExecution(MigrationExecution):

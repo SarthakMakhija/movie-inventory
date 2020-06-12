@@ -1,5 +1,5 @@
 from flaskr.flask_application import Application
-from tests.configuration.TestConfiguration import TestConfiguration
+from tests.configuration.configuration_test import TestConfiguration
 
 
 class TestClient:
