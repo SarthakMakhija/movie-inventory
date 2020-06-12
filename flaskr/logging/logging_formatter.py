@@ -7,15 +7,15 @@ from flask.logging import default_handler
 class LoggingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         if has_request_context():
-            record.uri = request.uri
+            record.url = request.url
         else:
-            record.uri = None
+            record.url = None
 
-        super().format(record)
+        return super().format(record)
 
 
 class LoggingConfiguration:
     @staticmethod
     def configure():
-        formatter = LoggingFormatter('[%(asctime)s] %(levelname)s %(module)s: %(message)s for %(uri)s')
+        formatter = LoggingFormatter('[%(asctime)s] %(levelname)s %(module)s: %(message)s for URL %(url)s')
         default_handler.setFormatter(formatter)

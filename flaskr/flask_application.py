@@ -18,6 +18,7 @@ class Application:
         self.__api = app.api
         self.__config = app.config
         self.__db = app.db
+        self.__logger = app.logger
 
     @classmethod
     def create_app(cls, config: Type[Configuration]) -> Application:
@@ -48,6 +49,10 @@ class Application:
     @property
     def flask_application(self):
         return self.__app
+
+    @property
+    def logger(self):
+        return self.__logger
 
     def configuration_value_for(self, key):
         return self.__config[key]
