@@ -1,7 +1,8 @@
-from main import app
+from flaskr.flask_application import Application
+from tests.configuration.TestConfiguration import TestConfiguration
 
 
 class TestClient:
     @staticmethod
     def create():
-        return app.test_client()
+        return Application(TestConfiguration).flask_application.test_client()
