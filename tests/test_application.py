@@ -3,6 +3,7 @@ from logging import Logger
 
 from flask import Flask
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 
 from flaskr import Application
 
@@ -23,3 +24,8 @@ class ApplicationTest(unittest.TestCase):
         application = Application(app=Flask(__name__))
         logger = application.logger
         self.assertTrue(type(logger) == Logger)
+
+    def test_should_return_an_instance_of_SQLAlchemy(self):
+        application = Application(app=Flask(__name__))
+        db = application.db
+        self.assertTrue(type(db) == SQLAlchemy)

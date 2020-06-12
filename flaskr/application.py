@@ -2,7 +2,9 @@ from logging import Logger
 
 from flask import Flask
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 
+from flaskr.Configuration import Configuration
 from flaskr.logging.logging_formatter import LoggingConfiguration
 from flaskr.rest_resource_registry import RestResourceRegistry
 
@@ -13,6 +15,8 @@ class Application:
         self.__app = app
         self.__logger = self.__app.logger
         self.__api = Api(self.__app)
+        self.__app.config.from_object(Configuration())
+        self.__db = SQLAlchemy(self.__app)
         RestResourceRegistry(self.__api)
 
     @property
@@ -22,6 +26,10 @@ class Application:
     @property
     def app(self) -> Flask:
         return self.__app
+
+    @property
+    def db(self) -> SQLAlchemy:
+        return self.__db
 
     @property
     def logger(self) -> Logger:
