@@ -1,0 +1,10 @@
+version: '3'
+services:
+  database:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=mmaster
+      - POSTGRES_PASSWORD=mmaster
+      - POSTGRES_DB=movie_snapshots
+    ports:
+      - 5432:5432
