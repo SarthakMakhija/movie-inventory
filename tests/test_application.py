@@ -1,31 +1,29 @@
 import unittest
-from logging import Logger
 
-from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from flaskr.application import Application
+from flaskr.configuration import Configuration
+from flaskr.flask_application import Application
 
 
 class ApplicationTest(unittest.TestCase):
 
-    def test_should_return_an_instance_of_api(self):
-        application = Application()
+    def test_should_return_an_instance_of_app_with_api_reference(self):
+        application = Application.create_app(Configuration)
         api = application.api
         self.assertTrue(type(api) == Api)
 
-    def test_should_return_an_instance_of_app(self):
-        application = Application()
-        app = application.app
-        self.assertTrue(type(app) == Flask)
+    def test_should_return_an_instance_of_app_with_db_reference(self):
+        application = Application.create_app(Configuration)
+        app = application.db
+        self.assertTrue(type(app) == SQLAlchemy)
 
-    def test_should_return_an_instance_of_logger(self):
-        application = Application()
-        logger = application.logger
-        self.assertTrue(type(logger) == Logger)
+    def test_should_return_an_instance_of_app_with_configuration(self):
 
-    def test_should_return_an_instance_of_SQLAlchemy(self):
-        application = Application()
-        db = application.db
-        self.assertTrue(type(db) == SQLAlchemy)
+        class TestConfiguration(Configuration):
+            ENV = "TEST"
+
+        application = Application.create_app(TestConfiguration)
+        env = application.configuration_value_for("ENV")
+        self.assertEqual("TEST", env)

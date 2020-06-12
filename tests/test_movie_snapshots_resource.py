@@ -3,9 +3,9 @@ from unittest.mock import patch
 
 from flask_restful import marshal
 
+from tests.fixtures.test_client import TestClient
 from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.view.movie_snapshots_view import MovieSnapshotsView
-from tests.fixtures.test_client import TestClient
 
 
 class MovieSnapshotResourceTest(unittest.TestCase):

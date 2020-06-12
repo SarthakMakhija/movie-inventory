@@ -4,4 +4,4 @@ from main import app
 class TestClient:
     @staticmethod
     def create():
-        return app.app.test_client()
+        return app.test_client()
