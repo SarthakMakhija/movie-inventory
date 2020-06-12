@@ -1,3 +1,3 @@
 class MovieSnapshotsService:
-    def get(self):
+    def get_all(self):
         pass

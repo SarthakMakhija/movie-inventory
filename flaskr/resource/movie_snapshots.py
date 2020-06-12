@@ -9,4 +9,4 @@ class MovieSnapshots(Resource):
         self.movie_snapshots_service = MovieSnapshotsService()
 
     def get(self):
-        return self.movie_snapshots_service.get()
+        return self.movie_snapshots_service.get_all()
