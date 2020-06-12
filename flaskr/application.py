@@ -9,12 +9,17 @@ from flaskr.logging.logging_formatter import LoggingConfiguration
 class Application:
     def __init__(self, app: Flask):
         LoggingConfiguration.configure()
-        self.__logger = app.logger
-        self.__api = Api(app)
+        self.__app = app
+        self.__logger = self.__app.logger
+        self.__api = Api(self.__app)
 
     @property
     def api(self) -> Api:
         return self.__api
+
+    @property
+    def app(self) -> Flask:
+        return self.__app
 
     @property
     def logger(self) -> Logger:

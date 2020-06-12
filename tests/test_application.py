@@ -8,10 +8,16 @@ from flaskr import Application
 
 
 class ApplicationTest(unittest.TestCase):
+
     def test_should_return_an_instance_of_api(self):
         application = Application(app=Flask(__name__))
         api = application.api
         self.assertTrue(type(api) == Api)
+
+    def test_should_return_an_instance_of_app(self):
+        application = Application(app=Flask(__name__))
+        app = application.app
+        self.assertTrue(type(app) == Flask)
 
     def test_should_return_an_instance_of_logger(self):
         application = Application(app=Flask(__name__))
