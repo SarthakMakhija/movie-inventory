@@ -7,7 +7,7 @@ from flaskr.view.movie_snapshots_view import MovieSnapshotsView
 from tests.fixtures.test_client import TestClient
 
 
-class MovieSnapshotTests(unittest.TestCase):
+class MovieSnapshotTest(unittest.TestCase):
     __test_client = TestClient.create()
 
     @patch("flaskr.resource.movie_snapshots.MovieSnapshotsService")
