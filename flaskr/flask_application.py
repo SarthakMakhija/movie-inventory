@@ -23,8 +23,8 @@ class Application:
         self.__config = app.config
         self.__db = db
         self.__logger = app.logger
-
         db.init_app(app)
+        db.app = app
         RestResourceRegistry(self.__api)
 
     @property
