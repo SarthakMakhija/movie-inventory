@@ -1,4 +1,5 @@
 import unittest
+from datetime import date
 
 from flask_restful import marshal
 
@@ -12,14 +13,15 @@ class MovieSnapshotResourceTest(unittest.TestCase):
     __test_client = TestClient.create()
 
     def test_should_assert_all_snapshots(self):
-        MovieSnapshotFixture.create_a_movie_snapshot(MovieSnapshot("3 idiots", "Rajkumar Hirani"))
+        MovieSnapshotFixture.create_a_movie_snapshot(MovieSnapshot("3 idiots", "Rajkumar Hirani", date(2009, 12, 25)))
 
-        expected_movie_snapshots_views = marshal([MovieSnapshotsView("3 idiots", "Rajkumar Hirani")],
+        expected_movie_snapshots_views = marshal([MovieSnapshotsView("3 idiots", "Rajkumar Hirani", date(2009, 12, 25))],
                                                  fields=MovieSnapshotsView.DISPLAYABLE_FIELDS)
 
         response = self.__test_client.get("/movie-snapshots")
 
         actual_movie_snapshot_views = response.json
+
         self.assertEqual(expected_movie_snapshots_views, actual_movie_snapshot_views)
 
     def tearDown(self) -> None:

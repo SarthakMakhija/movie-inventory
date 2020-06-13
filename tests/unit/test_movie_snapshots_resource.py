@@ -1,4 +1,5 @@
 import unittest
+from datetime import date
 from unittest.mock import patch
 
 from flask_restful import marshal
@@ -25,17 +26,17 @@ class MovieSnapshotResourceTest(unittest.TestCase):
 
     @patch("flaskr.resource.movie_snapshots_resource.MovieSnapshotsService")
     def test_should_assert_total_snapshots_to_equal_1(self, movie_snapshots_service):
-        movie_snapshots_service.return_value.get_all.return_value = [MovieSnapshot("3 idiots", "Rajkumar Hirani")]
+        movie_snapshots_service.return_value.get_all.return_value = [MovieSnapshot("3 idiots", "Rajkumar Hirani", date(2009, 12, 25))]
         response = self.__test_client.get("/movie-snapshots")
         movie_snapshots = response.json
         self.assertEqual(1, len(movie_snapshots))
 
     @patch("flaskr.resource.movie_snapshots_resource.MovieSnapshotsService")
     def test_should_assert_all_snapshots(self, movie_snapshots_service):
-        expected_movie_snapshots_views = marshal([MovieSnapshotsView("3 idiots", "Rajkumar Hirani")],
+        expected_movie_snapshots_views = marshal([MovieSnapshotsView("3 idiots", "Rajkumar Hirani", date(2009, 12, 25))],
                                                  fields=MovieSnapshotsView.DISPLAYABLE_FIELDS)
 
-        movie_snapshots = [MovieSnapshot("3 idiots", "Rajkumar Hirani")]
+        movie_snapshots = [MovieSnapshot("3 idiots", "Rajkumar Hirani", date(2009, 12, 25))]
         movie_snapshots_service.return_value.get_all.return_value = movie_snapshots
 
         response = self.__test_client.get("/movie-snapshots")
