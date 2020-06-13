@@ -1,10 +1,8 @@
+import json
 import unittest
 from datetime import date
 from unittest.mock import patch
 
-from flask_restful import marshal
-
-from flaskr.view.movie_snapshots_view import MovieSnapshotsView
 from tests.fixtures.movie_snapshot_builder import MovieSnapshotBuilder
 from tests.fixtures.test_client import TestClient
 
@@ -36,15 +34,17 @@ class MovieSnapshotResourceTest(unittest.TestCase):
         movie_snapshot = MovieSnapshotBuilder.snapshot_title("3 idiots") \
             .directed_by("Rajkumar Hirani") \
             .released_on(date(2009, 12, 25)) \
+            .add_rating_with(value="9/10", source="internet") \
             .finish()
 
-        expected_movie_snapshots_views = marshal(
-            [MovieSnapshotsView("3 idiots", "Rajkumar Hirani", date(2009, 12, 25))],
-            fields=MovieSnapshotsView.DISPLAYABLE_FIELDS)
+        expected_json = '[{"title": "3 idiots", "director": "Rajkumar Hirani", "release_year": 2009, "release_date": ' \
+                        '"2009-12-25", "ratings": [{"value": "internet", "source": "9/10"}]}]'
+
+        expected_movie_snapshot_views = json.loads(expected_json)
 
         movie_snapshots = [movie_snapshot]
         movie_snapshots_service.return_value.get_all.return_value = movie_snapshots
 
         response = self.__test_client.get("/movie-snapshots")
         actual_movie_snapshot_views = response.json
-        self.assertEqual(expected_movie_snapshots_views, actual_movie_snapshot_views)
+        self.assertEqual(expected_movie_snapshot_views, actual_movie_snapshot_views)
