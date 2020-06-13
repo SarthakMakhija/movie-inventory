@@ -20,7 +20,7 @@ class MovieSnapshotRatingsView:
 
     @staticmethod
     def make_from(movie_snapshot_rating: MovieSnapshotRating) -> MovieSnapshotRatingsView:
-        return MovieSnapshotRatingsView(movie_snapshot_rating.source, movie_snapshot_rating.value)
+        return MovieSnapshotRatingsView(movie_snapshot_rating.value, movie_snapshot_rating.source)
 
     @property
     def value(self):
@@ -72,4 +72,5 @@ class MovieSnapshotsView:
 
     @property
     def ratings(self):
+        print(self.__ratings[0].source)
         return self.__ratings

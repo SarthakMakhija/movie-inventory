@@ -3,7 +3,7 @@ import unittest
 from datetime import date
 from unittest.mock import patch
 
-from tests.fixtures.movie_snapshot_builder import MovieSnapshotBuilder
+from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.test_client import TestClient
 
 
@@ -24,14 +24,14 @@ class MovieSnapshotResourceTest(unittest.TestCase):
 
     @patch("flaskr.resource.movie_snapshots_resource.MovieSnapshotsService")
     def test_should_assert_total_snapshots_to_equal_1(self, movie_snapshots_service):
-        movie_snapshots_service.return_value.get_all.return_value = [MovieSnapshotBuilder.any_snapshot().finish()]
+        movie_snapshots_service.return_value.get_all.return_value = [MovieSnapshotsBuilder.any_snapshot().finish()]
         response = self.__test_client.get("/movie-snapshots")
         movie_snapshots = response.json
         self.assertEqual(1, len(movie_snapshots))
 
     @patch("flaskr.resource.movie_snapshots_resource.MovieSnapshotsService")
     def test_should_assert_all_snapshots(self, movie_snapshots_service):
-        movie_snapshot = MovieSnapshotBuilder.snapshot_title("3 idiots") \
+        movie_snapshot = MovieSnapshotsBuilder.snapshot_title("3 idiots") \
             .directed_by("Rajkumar Hirani") \
             .released_on(date(2009, 12, 25)) \
             .add_rating_with(value="9/10", source="internet") \

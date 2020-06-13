@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.service.movie_snapshots_service import MovieSnapshotsService
-from tests.fixtures.movie_snapshot_builder import MovieSnapshotBuilder
+from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 
 
 class MovieSnapshotsServiceTest(unittest.TestCase):
@@ -26,7 +26,7 @@ class MovieSnapshotsServiceTest(unittest.TestCase):
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository")
     def test_should_return_one_movie_snapshot_with_movie_title(self, movie_snapshots_repository):
         movie_snapshots_repository.return_value.get_all.return_value = [
-            MovieSnapshotBuilder.snapshot_title("3 idiots").finish()]
+            MovieSnapshotsBuilder.snapshot_title("3 idiots").finish()]
 
         movie_snapshot: MovieSnapshot = MovieSnapshotsService().get_all()[0]
         self.assertEqual("3 idiots", movie_snapshot.title)
@@ -34,7 +34,7 @@ class MovieSnapshotsServiceTest(unittest.TestCase):
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository")
     def test_should_return_one_movie_snapshot_with_movie_director(self, movie_snapshots_repository):
         movie_snapshots_repository.return_value.get_all.return_value = [
-            MovieSnapshotBuilder.any_snapshot().directed_by("Rajkumar").finish()]
+            MovieSnapshotsBuilder.any_snapshot().directed_by("Rajkumar").finish()]
 
         movie_snapshot: MovieSnapshot = MovieSnapshotsService().get_all()[0]
         self.assertEqual("Rajkumar", movie_snapshot.director)
@@ -42,7 +42,7 @@ class MovieSnapshotsServiceTest(unittest.TestCase):
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository")
     def test_should_return_one_movie_snapshot_with_release_date(self, movie_snapshots_repository):
         movie_snapshots_repository.return_value.get_all.return_value = [
-            MovieSnapshotBuilder.any_snapshot().released_on(date(2009, 12, 25)).finish()]
+            MovieSnapshotsBuilder.any_snapshot().released_on(date(2009, 12, 25)).finish()]
 
         movie_snapshot: MovieSnapshot = MovieSnapshotsService().get_all()[0]
         self.assertEqual(date(2009, 12, 25), movie_snapshot.release_date)
@@ -50,7 +50,7 @@ class MovieSnapshotsServiceTest(unittest.TestCase):
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository")
     def test_should_return_one_movie_snapshot_with_release_year(self, movie_snapshots_repository):
         movie_snapshots_repository.return_value.get_all.return_value = [
-            MovieSnapshotBuilder.any_snapshot().released_on(date(2009, 12, 25)).finish()]
+            MovieSnapshotsBuilder.any_snapshot().released_on(date(2009, 12, 25)).finish()]
 
         movie_snapshot: MovieSnapshot = MovieSnapshotsService().get_all()[0]
         self.assertEqual(2009, movie_snapshot.release_year)

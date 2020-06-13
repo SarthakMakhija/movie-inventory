@@ -5,7 +5,7 @@ from datetime import date
 from flaskr.entity.movie_snapshot import MovieSnapshotRating, MovieSnapshot
 
 
-class MovieSnapshotBuilder:
+class MovieSnapshotsBuilder:
 
     def __init__(self, title: str):
         self.__title = title
@@ -15,21 +15,21 @@ class MovieSnapshotBuilder:
 
     @staticmethod
     def snapshot_title(value: str):
-        return MovieSnapshotBuilder(title=value)
+        return MovieSnapshotsBuilder(title=value)
 
     @staticmethod
     def any_snapshot():
-        return MovieSnapshotBuilder(title="")
+        return MovieSnapshotsBuilder(title="")
 
-    def directed_by(self, name: str) -> MovieSnapshotBuilder:
+    def directed_by(self, name: str) -> MovieSnapshotsBuilder:
         self.__director = name
         return self
 
-    def released_on(self, a_date: date) -> MovieSnapshotBuilder:
+    def released_on(self, a_date: date) -> MovieSnapshotsBuilder:
         self.__release_date = a_date
         return self
 
-    def add_rating_with(self, value: str, source: str) -> MovieSnapshotBuilder:
+    def add_rating_with(self, value: str, source: str) -> MovieSnapshotsBuilder:
         self.__ratings.append(MovieSnapshotRating(value, source))
         return self
 
