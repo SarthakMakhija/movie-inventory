@@ -14,14 +14,14 @@ We wish to pull movies from OMDB (http://www.omdbapi.com/) and store in our syst
 We would also like to allow anyone to retrieve these movie snapshots.
 
 As mentioned, we are an "API first" company and we now expect to build two APIs -
-- one that gets all the movie snapshots from our system
+- one that *gets all movie snapshots* from our system
     - is an OPEN API
-- one that creates movie snapshots in our system by fetching the information from omdb
+- one that *creates movie snapshots* in our system by fetching the information from omdb
     - is a protected API
     - every request should contain a header "x-api-key" with "d2ViLWFwcGxpY2F0aW9uLWluLWZsYXNr" as the value
     - allow our people to pass mutiple movie titles to be fetched from OMDB
 
-We expect proper REST status in the system - 
+We expect proper **REST status** in the system - 
 - 500 for INTERNAL_SERVER_ERROR
 - 200 for OK
 - 201 for CREATED
@@ -35,15 +35,16 @@ Movie snapshot includes -
 - director
 - and ratings which is a collection
 
-Summarizing -
-As a part of the system
-- build APIs, 
-- ensure security, 
-- fetch from OMDB, 
-- store in the system, 
-- get all movie snapshots from the system
-- and needless to say, ensure that the system is properly tested
+**Summarizing**
 
+As a part of the system
+- build APIs
+- ensure security
+- fetch from OMDB
+- store in the system
+- get all movie snapshots from the system
+- include retries while communicating with OMDB
+- and needless to say, ensure that the system is properly tested
 
 # Pairing by
 - [Abhijeet Sonawane](https://github.com/abhijeetsonawane)
