@@ -17,6 +17,10 @@ class MovieSnapshotBuilder:
     def snapshot_title(value: str):
         return MovieSnapshotBuilder(title=value)
 
+    @staticmethod
+    def any_snapshot():
+        return MovieSnapshotBuilder(title="")
+
     def directed_by(self, name: str) -> MovieSnapshotBuilder:
         self.__director = name
         return self
