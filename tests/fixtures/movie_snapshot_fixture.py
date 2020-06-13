@@ -1,5 +1,5 @@
 from flaskr.entity import db
-from flaskr.entity.movie_snapshot import MovieSnapshot
+from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
 
 
 class MovieSnapshotFixture:
@@ -11,5 +11,6 @@ class MovieSnapshotFixture:
 
     @staticmethod
     def delete_all():
+        MovieSnapshotRating.query.delete()
         MovieSnapshot.query.delete()
         db.session.commit()
