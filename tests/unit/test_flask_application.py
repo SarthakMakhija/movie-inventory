@@ -30,6 +30,7 @@ class ApplicationTest(unittest.TestCase):
 
         class TestConfiguration(Configuration):
             ENV = "TEST"
+            SQLALCHEMY_DATABASE_URI = ""
 
         application = Application(TestConfiguration)
         env = application.configuration_value_for("ENV")
