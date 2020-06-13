@@ -21,8 +21,8 @@ class MovieSnapshotResourceIntegrationTest(unittest.TestCase):
         MovieSnapshotsFixture.create_a_movie_snapshot(movie_snapshot)
 
         expected_json = '[{"title": "3 idiots", "director": "Rajkumar Hirani", "release_year": 2009, "release_date": ' \
-                        '"2009-12-25", "ratings": [{"value": "internet", "source": "7/10"}, {"value": "imdb", ' \
-                        '"source": "9/10"}]}]'
+                        '"2009-12-25", "ratings": [{"value": "7/10", "source": "internet"}, {"value": "9/10", ' \
+                        '"source": "imdb"}]}]'
 
         expected_movie_snapshot_views = json.loads(expected_json)
 

@@ -38,7 +38,7 @@ class MovieSnapshotResourceTest(unittest.TestCase):
             .finish()
 
         expected_json = '[{"title": "3 idiots", "director": "Rajkumar Hirani", "release_year": 2009, "release_date": ' \
-                        '"2009-12-25", "ratings": [{"value": "internet", "source": "9/10"}]}]'
+                        '"2009-12-25", "ratings": [{"value": "9/10", "source": "internet"}]}]'
 
         expected_movie_snapshot_views = json.loads(expected_json)
 

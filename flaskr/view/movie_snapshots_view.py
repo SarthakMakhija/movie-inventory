@@ -72,5 +72,4 @@ class MovieSnapshotsView:
 
     @property
     def ratings(self):
-        print(self.__ratings[0].source)
         return self.__ratings
