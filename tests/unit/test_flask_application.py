@@ -1,5 +1,4 @@
 import unittest
-from logging import Logger
 
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -20,11 +19,6 @@ class ApplicationTest(unittest.TestCase):
         application = Application(TestConfiguration)
         app = application.db
         self.assertTrue(type(app) == SQLAlchemy)
-
-    def test_should_return_an_instance_of_app_with_logger_reference(self):
-        application = Application(TestConfiguration)
-        app = application.logger
-        self.assertTrue(type(app) == Logger)
 
     def test_should_return_an_instance_of_app_with_configuration(self):
 
