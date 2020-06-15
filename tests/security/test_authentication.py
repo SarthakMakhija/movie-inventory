@@ -16,7 +16,7 @@ class AuthenticationTest(unittest.TestCase):
         self.assertEqual(401, status_code)
 
     def test_should_return_Ok_given_request_contains_authorization_header(self):
-        response = self.__test_client.get("/fake-protected", headers=[("Authorization", "fake")])
+        response = self.__test_client.get("/fake-protected", headers=[("x-api-key", "fake")])
         status_code = response.status_code
         self.assertEqual(200, status_code)
 
