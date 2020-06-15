@@ -27,3 +27,21 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
                                             call("http://www.omdbapi.com/?t=Jumanji"),
                                             call().json()],
                                            any_order=False)
+
+    @patch("flaskr.service.movie_snapshots_registration_service.requests.get")
+    @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
+    def test_should_register_movie_snapshots_given_registration_request(self, save_all_movie_snapshots_repository_mock,
+                                                                        get_requests_mock):
+        movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
+        movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
+
+        ratings = [{"Source": "Internet Movie Database",
+                    "Value": "8.4/10"
+                    }]
+        get_requests_mock.return_value.json.return_value = {"Title": "3 Idiots",
+                                                            "Director": "Rajkumar Hirani",
+                                                            "Released": "25 Dec 2009",
+                                                            "Ratings": ratings}
+
+        movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
+        save_all_movie_snapshots_repository_mock.assert_called_once()
