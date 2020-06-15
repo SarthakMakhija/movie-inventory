@@ -3,10 +3,14 @@ from datetime import date
 from unittest.mock import patch, call
 
 from flaskr.omdb_movie_client import OmdbMovieClient
+from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
+from tests.fixtures.test_client import TestClient
 
 
 class OmdbMovieClientTest(unittest.TestCase):
+
+    __client = TestClient.create()
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
     def test_should_fetch_single_movie_given_single_movie_title(self,
@@ -14,7 +18,7 @@ class OmdbMovieClientTest(unittest.TestCase):
         omdb_movie_client = OmdbMovieClient()
 
         omdb_movie_client.get_movies_for(titles=["3 idiots"])
-        get_requests_mock.assert_called_once_with("http://www.omdbapi.com/?t=3 idiots")
+        get_requests_mock.assert_called_once_with(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}")
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
     def test_should_fetch_multiple_movies_given_multiple_movie_titles(self, get_requests_mock):
@@ -22,8 +26,8 @@ class OmdbMovieClientTest(unittest.TestCase):
 
         omdb_movie_client.get_movies_for(["3 idiots", "Jumanji"])
 
-        get_requests_mock.assert_has_calls([call("http://www.omdbapi.com/?t=3 idiots"),
-                                            call("http://www.omdbapi.com/?t=Jumanji")],
+        get_requests_mock.assert_has_calls([call(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}"),
+                                            call(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}")],
                                            any_order=False)
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)

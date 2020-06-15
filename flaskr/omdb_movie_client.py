@@ -41,10 +41,14 @@ class Movie:
 
 class OmdbMovieClient:
 
+    def __init__(self):
+        from flaskr.flask_application import Application
+        self.api_key = Application.instance().configuration_value_for("OMDB_API_KEY")
+
     def get_movies_for(self, titles: List[str]) -> List[Movie]:
         movies: List[Movie] = []
         for title in titles:
-            response = requests.get(f"http://www.omdbapi.com/?t={title}")
+            response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
             movies.append(Movie(response.json()))
 
         return movies

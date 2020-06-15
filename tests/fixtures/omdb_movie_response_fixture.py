@@ -1,3 +1,6 @@
+from tests.configuration.configuration_test import TestConfiguration
+
+
 def mock_omdb_movie_response(*args, **kargs):
     class MockResponse:
         def __init__(self, payload, status_code):
@@ -7,7 +10,7 @@ def mock_omdb_movie_response(*args, **kargs):
         def json(self):
             return self.json_data
 
-    if args[0] == "http://www.omdbapi.com/?t=3 idiots":
+    if args[0] == f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}":
         return MockResponse({
             "Title": "3 idiots",
             "Director": "Rajkumar Hirani",
@@ -15,7 +18,7 @@ def mock_omdb_movie_response(*args, **kargs):
             "Ratings": [{"Source": "internet", "Value": "9/10"}]},
             200
         )
-    elif args[0] == "http://www.omdbapi.com/?t=Jumanji":
+    elif args[0] == f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}":
         return MockResponse({
             "Title": "Jumanji",
             "Director": "Joe Johnston ",
