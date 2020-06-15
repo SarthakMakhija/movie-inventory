@@ -1,10 +1,8 @@
-from datetime import date
 from typing import List, Dict
 
-import requests
-
-from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
+from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
+from flaskr.omdb_movie_client import OmdbMovieClient
 from flaskr.repository.movie_snapshots_repository import MovieSnapshotsRepository
 
 
@@ -12,16 +10,17 @@ class MovieSnapshotsRegistrationService:
 
     def __init__(self):
         self.movie_snapshots_repository = MovieSnapshotsRepository()
+        self.omdb_client = OmdbMovieClient()
 
     def register_snapshots_for(self, a_request: MovieSnapshotsRegistrationRequest) -> Dict[str, List[str]]:
-        jsons = []
-        for title in a_request.titles:
-            r = requests.get(f"http://www.omdbapi.com/?t={title}")
-            jsons.append(r.json())
+        movies = self.omdb_client.get_movies_for(a_request.titles)
+        snapshots: List[MovieSnapshot] = [movie.to_movie_snapshot() for movie in movies]
 
-        snapshots = []
-        for json in jsons:
-            ratings = [MovieSnapshotRating(rating["Value"], rating["Source"]) for rating in json["Ratings"]]
-            snapshots.append(MovieSnapshot(json["Title"], json["Director"], date(2005, 12, 25), ratings))
+        if len(snapshots) == 0:
+            return {
+                "snapshot_ids": []
+            }
 
-        self.movie_snapshots_repository.save_all(snapshots)
+        return {
+            "snapshot_ids": self.movie_snapshots_repository.save_all(snapshots)
+        }
