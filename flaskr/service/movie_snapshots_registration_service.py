@@ -12,15 +12,12 @@ class MovieSnapshotsRegistrationService:
         self.movie_snapshots_repository = MovieSnapshotsRepository()
         self.omdb_client = OmdbMovieClient()
 
-    def register_snapshots_for(self, a_request: MovieSnapshotsRegistrationRequest) -> Dict[str, List[str]]:
+    def register_snapshots_for(self, a_request: MovieSnapshotsRegistrationRequest) -> List[str]:
         movies = self.omdb_client.get_movies_for(a_request.titles)
         snapshots: List[MovieSnapshot] = [movie.to_movie_snapshot() for movie in movies]
 
-        if len(snapshots) == 0:
-            return {
-                "snapshot_ids": []
-            }
+        if snapshots:
+            return self.movie_snapshots_repository.save_all(snapshots)
+        else:
+            return []
 
-        return {
-            "snapshot_ids": self.movie_snapshots_repository.save_all(snapshots)
-        }

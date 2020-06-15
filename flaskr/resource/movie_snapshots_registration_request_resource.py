@@ -27,8 +27,9 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
     def post(self, movie_snapshots_registration_request: MovieSnapshotsRegistrationRequest):
         self.logger.info(f"Received a request for registering movie snapshots with titles = {movie_snapshots_registration_request.titles}")
 
-        response = self\
+        snapshot_ids = self\
             .movie_snapshots_registration_service\
             .register_snapshots_for(a_request=movie_snapshots_registration_request)
 
+        response = {"snapshot_ids": snapshot_ids}
         return json.dumps(response), 201

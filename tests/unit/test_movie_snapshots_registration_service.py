@@ -42,6 +42,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
     def test_should_not_register_movie_snapshots_given_no_movie_exists_for_the_given_title(self,
                                                                                            save_all_movie_snapshots_repository_mock,
                                                                                            get_movies_omdb_client_mock):
+
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
@@ -55,6 +56,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
     def test_should_return_a_list_of_registered_movie_snapshot_ids(self,
                                                                 save_all_movie_snapshots_repository_mock,
                                                                 get_movies_omdb_client_mock):
+
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
@@ -69,4 +71,4 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(
             movie_snapshots_registration_request)
 
-        self.assertEqual({"snapshot_ids": ["id_001"]}, movie_snapshot_registration_response)
+        self.assertEqual(["id_001"], movie_snapshot_registration_response)
