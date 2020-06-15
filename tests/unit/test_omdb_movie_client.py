@@ -3,14 +3,13 @@ from datetime import date
 from unittest.mock import patch, call
 
 from flaskr.omdb_movie_client import OmdbMovieClient
+from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
-from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class OmdbMovieClientTest(unittest.TestCase):
-
-    __client = TestClient.create()
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
     def test_should_fetch_single_movie_given_single_movie_title(self,

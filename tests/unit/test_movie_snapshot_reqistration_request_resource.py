@@ -1,10 +1,12 @@
 import unittest
 from unittest.mock import patch
 
+from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
     __test_client = TestClient.create()
 

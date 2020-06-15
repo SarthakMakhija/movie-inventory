@@ -3,13 +3,13 @@ from datetime import date
 from typing import List
 
 from flaskr.repository.movie_snapshots_repository import MovieSnapshotsRepository
+from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
-from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class MovieSnapshotsResourceRepositoryIntegrationTest(unittest.TestCase):
-    __client = TestClient.create()
 
     def test_should_save_all_movie_snapshots(self):
         movie_snapshot = MovieSnapshotsBuilder.snapshot_title("3 idiots") \

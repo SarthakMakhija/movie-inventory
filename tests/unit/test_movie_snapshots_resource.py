@@ -3,10 +3,12 @@ import unittest
 from datetime import date
 from unittest.mock import patch
 
+from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class MovieSnapshotResourceTest(unittest.TestCase):
     __test_client = TestClient.create()
 

@@ -5,9 +5,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flaskr.configuration import Configuration
 from flaskr.flask_application import Application
+from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
 
 
+@application_test()
 class ApplicationTest(unittest.TestCase):
 
     def test_should_return_an_instance_of_app_with_api_reference(self):
@@ -21,7 +23,6 @@ class ApplicationTest(unittest.TestCase):
         self.assertTrue(type(app) == SQLAlchemy)
 
     def test_should_return_an_instance_of_app_with_configuration(self):
-
         class TestConfiguration(Configuration):
             ENV = "TEST"
             SQLALCHEMY_DATABASE_URI = ""

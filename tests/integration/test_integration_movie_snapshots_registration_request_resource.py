@@ -1,12 +1,14 @@
 import unittest
 from unittest.mock import patch
 
+from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
 from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
 from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase):
     __test_client = TestClient.create()
 

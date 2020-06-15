@@ -2,11 +2,13 @@ import json
 import unittest
 from datetime import date
 
+from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
 from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class MovieSnapshotsResourceIntegrationTest(unittest.TestCase):
     __test_client = TestClient.create()
 
