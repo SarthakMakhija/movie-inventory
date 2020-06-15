@@ -16,6 +16,10 @@ class MovieSnapshotsFixture:
         return [snapshot.id for snapshot in MovieSnapshot.query.all()]
 
     @staticmethod
+    def get_by_id(snapshot_id: int) -> MovieSnapshot:
+        return MovieSnapshot.query.get(snapshot_id)
+
+    @staticmethod
     def delete_all():
         MovieSnapshotRating.query.delete()
         MovieSnapshot.query.delete()
