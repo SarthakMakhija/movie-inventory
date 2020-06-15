@@ -4,9 +4,12 @@ from unittest.mock import patch
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.omdb_movie_client import Movie
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
+from tests.fixtures.test_client import TestClient
 
 
 class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
+
+    __client = TestClient.create()
 
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_for")
     def test_should_fetch_movies_given_registration_request(self,
