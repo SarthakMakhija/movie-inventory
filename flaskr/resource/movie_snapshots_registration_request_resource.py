@@ -1,7 +1,10 @@
+import json
+
 from flask_restful import Resource, reqparse
 
 from flaskr.logger_factory import LoggerFactory
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
+from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
 
 
 def parse_movie_snapshots_registration_request(func):
@@ -17,10 +20,15 @@ def parse_movie_snapshots_registration_request(func):
 class MovieSnapshotsRegistrationRequestResource(Resource):
 
     def __init__(self):
+        self.movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
         self.logger = LoggerFactory.instance().logger()
 
     @parse_movie_snapshots_registration_request
     def post(self, movie_snapshots_registration_request: MovieSnapshotsRegistrationRequest):
         self.logger.info(f"Received a request for registering movie snapshots with titles = {movie_snapshots_registration_request.titles}")
-        response = '{"snapshot_ids": ["id_001"]}'
-        return response, 201
+
+        response = self\
+            .movie_snapshots_registration_service\
+            .register_snapshots_for(a_request=movie_snapshots_registration_request)
+
+        return json.dumps(response), 201

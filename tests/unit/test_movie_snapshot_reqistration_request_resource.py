@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from tests.fixtures.test_client import TestClient
 
@@ -28,7 +29,9 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
 
         self.assertEqual(400, response.status_code)
 
-    def test_should_return_snapshot_id_given_a_request_to_register_movie_snapshots(self):
+    @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
+    def test_should_return_snapshot_id_given_a_request_to_register_movie_snapshots(self, movie_snapshots_registration_service):
+        movie_snapshots_registration_service.return_value.register_snapshots_for.return_value = {"snapshot_ids": ["id_001"]}
 
         response = self.__test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": "3 idiots"}',
