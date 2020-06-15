@@ -27,3 +27,12 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         response = self.__test_client.post("/movie-snapshots/registration-request")
 
         self.assertEqual(400, response.status_code)
+
+    def test_should_return_snapshot_id_given_a_request_to_register_movie_snapshots(self):
+
+        response = self.__test_client.post("/movie-snapshots/registration-request",
+                                           data='{"titles": "3 idiots"}',
+                                           content_type="application/json")
+
+        expected = '{"snapshot_ids": ["id_001"]}'
+        self.assertEqual(expected, response.json)

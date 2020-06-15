@@ -22,4 +22,5 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
     @parse_movie_snapshots_registration_request
     def post(self, movie_snapshots_registration_request: MovieSnapshotsRegistrationRequest):
         self.logger.info(f"Received a request for registering movie snapshots with titles = {movie_snapshots_registration_request.titles}")
-        return "", 201
+        response = '{"snapshot_ids": ["id_001"]}'
+        return response, 201
