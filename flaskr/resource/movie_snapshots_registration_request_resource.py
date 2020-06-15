@@ -7,8 +7,8 @@ def parse_movie_snapshots_registration_request(func):
     def wrapper(*args, **kargs):
         parser = reqparse.RequestParser()
         parser.add_argument("titles", action="append", required=True, location="json")
-        args = parser.parse_args()
-        return func(*args, MovieSnapshotsRegistrationRequest(args["titles"]))
+        payload = parser.parse_args()
+        return func(*args, MovieSnapshotsRegistrationRequest(payload["titles"]))
 
     return wrapper
 
