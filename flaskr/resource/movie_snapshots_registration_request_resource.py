@@ -4,6 +4,7 @@ from flask_restful import Resource, reqparse
 
 from flaskr.logger_factory import LoggerFactory
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
+from flaskr.security.authentication import authenticate
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
 
 
@@ -18,6 +19,7 @@ def parse_movie_snapshots_registration_request(func):
 
 
 class MovieSnapshotsRegistrationRequestResource(Resource):
+    method_decorators = [authenticate]
 
     def __init__(self):
         self.movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
@@ -25,10 +27,11 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
 
     @parse_movie_snapshots_registration_request
     def post(self, movie_snapshots_registration_request: MovieSnapshotsRegistrationRequest):
-        self.logger.info(f"Received a request for registering movie snapshots with titles = {movie_snapshots_registration_request.titles}")
+        self.logger.info(
+            f"Received a request for registering movie snapshots with titles = {movie_snapshots_registration_request.titles}")
 
-        snapshot_ids = self\
-            .movie_snapshots_registration_service\
+        snapshot_ids = self \
+            .movie_snapshots_registration_service \
             .register_snapshots_for(a_request=movie_snapshots_registration_request)
 
         response = {"snapshot_ids": snapshot_ids}

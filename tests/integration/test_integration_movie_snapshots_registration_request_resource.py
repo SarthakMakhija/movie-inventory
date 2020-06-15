@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 
+from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
 from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
 from tests.fixtures.test_client import TestClient
@@ -15,7 +16,8 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
         response = self.__test_client.post("/movie-snapshots/registration-request",
                                            data=movie_titles,
-                                           content_type="application/json")
+                                           content_type="application/json",
+                                           headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         snapshot_ids = MovieSnapshotsFixture.get_all_snapshot_ids()
         expected = '{{"snapshot_ids": {0}}}'.format(snapshot_ids)

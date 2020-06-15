@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 
+from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.test_client import TestClient
 
 
@@ -14,7 +15,8 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
 
         response = self.__test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": ["3 idiots"]}',
-                                           content_type="application/json")
+                                           content_type="application/json",
+                                           headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(201, response.status_code)
 
@@ -24,7 +26,8 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value = []
         response = self.__test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": "3 idiots"}',
-                                           content_type="application/json")
+                                           content_type="application/json",
+                                           headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(201, response.status_code)
 
@@ -32,7 +35,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
     def test_should_return_Bad_Request_given_a_request_to_register_movie_snapshots_without_titles(self, movie_snapshots_registration_service):
 
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value = []
-        response = self.__test_client.post("/movie-snapshots/registration-request")
+        response = self.__test_client.post("/movie-snapshots/registration-request", headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(400, response.status_code)
 
@@ -43,7 +46,16 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
 
         response = self.__test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": "3 idiots"}',
-                                           content_type="application/json")
+                                           content_type="application/json",
+                                           headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         expected = '{"snapshot_ids": ["id_001"]}'
         self.assertEqual(expected, response.json)
+
+    def test_should_return_Unauthorized_given_a_request_to_register_movie_snapshots_without_header(self):
+
+        response = self.__test_client.post("/movie-snapshots/registration-request",
+                                           data='{"titles": ["3 idiots"]}',
+                                           content_type="application/json")
+
+        self.assertEqual(401, response.status_code)
