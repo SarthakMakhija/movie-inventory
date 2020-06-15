@@ -6,7 +6,7 @@ from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
 from tests.fixtures.test_client import TestClient
 
 
-class MovieSnapshotResourceIntegrationTest(unittest.TestCase):
+class MovieSnapshotsResourceRepositoryIntegrationTest(unittest.TestCase):
     __client = TestClient.create()
 
     def test_should_save_all_movie_snapshots(self):
