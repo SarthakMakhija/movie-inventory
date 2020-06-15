@@ -4,12 +4,12 @@ from unittest.mock import patch
 
 from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.service.movie_snapshots_service import MovieSnapshotsService
+from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
-from tests.fixtures.test_client import TestClient
 
 
+@application_test()
 class MovieSnapshotsServiceTest(unittest.TestCase):
-    __client = TestClient.create()
 
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository")
     def test_should_return_zero_movie_snapshots(self, movie_snapshots_repository):
