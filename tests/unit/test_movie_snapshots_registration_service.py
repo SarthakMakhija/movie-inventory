@@ -42,7 +42,6 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
     def test_should_not_register_movie_snapshots_given_no_movie_exists_for_the_given_title(self,
                                                                                            save_all_movie_snapshots_repository_mock,
                                                                                            get_movies_omdb_client_mock):
-
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
@@ -53,10 +52,22 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_for")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
-    def test_should_return_a_list_of_registered_movie_snapshot_ids(self,
-                                                                save_all_movie_snapshots_repository_mock,
-                                                                get_movies_omdb_client_mock):
+    def test_should_return_empty_list_of_movie_snapshot_ids_given_no_registration_was_done(self,
+                                                                                           save_all_movie_snapshots_repository_mock,
+                                                                                           get_movies_omdb_client_mock):
+        movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
+        movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
+        get_movies_omdb_client_mock.return_value = []
+
+        movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
+        self.assertEqual([], movie_snapshot_registration_response)
+
+    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_for")
+    @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
+    def test_should_return_a_list_of_registered_movie_snapshot_ids(self,
+                                                                   save_all_movie_snapshots_repository_mock,
+                                                                   get_movies_omdb_client_mock):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
