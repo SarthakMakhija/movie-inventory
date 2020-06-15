@@ -11,12 +11,12 @@ from tests.configuration.configuration_test import TestConfiguration
 class ApplicationTest(unittest.TestCase):
 
     def test_should_return_an_instance_of_app_with_api_reference(self):
-        application = Application(TestConfiguration)
+        application = Application.init_app(TestConfiguration)
         api = application.api
         self.assertTrue(type(api) == Api)
 
     def test_should_return_an_instance_of_app_with_db_reference(self):
-        application = Application(TestConfiguration)
+        application = Application.init_app(TestConfiguration)
         app = application.db
         self.assertTrue(type(app) == SQLAlchemy)
 
@@ -26,6 +26,6 @@ class ApplicationTest(unittest.TestCase):
             ENV = "TEST"
             SQLALCHEMY_DATABASE_URI = ""
 
-        application = Application(TestConfiguration)
+        application = Application.init_app(TestConfiguration)
         env = application.configuration_value_for("ENV")
         self.assertEqual("TEST", env)
