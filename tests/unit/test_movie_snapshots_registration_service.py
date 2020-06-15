@@ -23,5 +23,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         get_requests_mock.assert_has_calls([call("http://www.omdbapi.com/?t=3 idiots"),
-                                            call("http://www.omdbapi.com/?t=Jumanji")],
+                                            call().json(),
+                                            call("http://www.omdbapi.com/?t=Jumanji"),
+                                            call().json()],
                                            any_order=False)
