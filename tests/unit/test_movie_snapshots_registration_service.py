@@ -17,7 +17,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.any_response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder().any_response().finish()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         get_movies_omdb_client_mock.called_once_with(["3 idiots"])
@@ -30,12 +30,12 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.successful_response_with(Movie({
+        get_movies_omdb_client_mock.return_value = ResponseBuilder().successful_response_with(Movie({
             "Title": "3 idiots",
             "Director": "Rajkumar Hirani",
             "Released": "25 Dec 2009",
             "Ratings": [{"Source": "internet", "Value": "9/10"}]}
-        ))
+        )).finish()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_called_once()
@@ -48,7 +48,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.any_response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder().any_response().finish()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_not_called()
@@ -61,7 +61,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.any_response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder().any_response().finish()
 
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(
             movie_snapshots_registration_request)
@@ -76,12 +76,13 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.successful_response_with(Movie({
+        get_movies_omdb_client_mock.return_value = ResponseBuilder().successful_response_with(Movie({
             "Title": "3 idiots",
             "Director": "Rajkumar Hirani",
             "Released": "25 Dec 2009",
             "Ratings": [{"Source": "internet", "Value": "9/10"}]}
-        ))
+        )).finish()
+
         save_all_movie_snapshots_repository_mock.return_value = ["id_001"]
 
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(

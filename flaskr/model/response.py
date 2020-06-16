@@ -56,6 +56,9 @@ class Response(Generic[T, E]):
     def all_success_t(self) -> List[T]:
         return [success.t() for success in self.__success]
 
+    def all_failure_t(self) -> List[T]:
+        return [failure.e() for failure in self.__failure]
+
     def __add_success(self, t: T):
         self.__success.append(t)
 

@@ -1,18 +1,28 @@
+from __future__ import annotations
+
 from typing import TypeVar
 
-from flaskr.model.response import Success, Response
+from flaskr.model.response import Success, Response, Failure
 
 T = TypeVar("T")
+E = TypeVar("E")
 
 
 class ResponseBuilder:
 
-    @staticmethod
-    def successful_response_with(t: T) -> Response:
-        response = Response()
-        response.add(Success.of(t))
-        return response
+    def __init__(self):
+        self.__response = Response()
 
-    @staticmethod
-    def any_response() -> Response:
-        return Response()
+    def successful_response_with(self, t: T) -> ResponseBuilder:
+        self.__response.add(Success.of(t))
+        return self
+
+    def failure_response_with(self, t: T) -> ResponseBuilder:
+        self.__response.add(Failure.of(t))
+        return self
+
+    def any_response(self) -> ResponseBuilder:
+        return self
+
+    def finish(self) -> Response[T, E]:
+        return self.__response
