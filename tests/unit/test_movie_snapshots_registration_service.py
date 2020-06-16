@@ -2,10 +2,10 @@ import unittest
 from unittest.mock import patch
 
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
-from flaskr.model.response import Response, Success
 from flaskr.omdb_movie_client import Movie
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
 from tests.application_test import application_test
+from tests.fixtures.response_builder import ResponseBuilder
 
 
 @application_test()
@@ -17,7 +17,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = Response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.just_response()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         get_movies_omdb_client_mock.called_once_with(["3 idiots"])
@@ -30,15 +30,12 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        response = Response()
-        response.add(Success.of(Movie({
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.successful_response_with(Movie({
             "Title": "3 idiots",
             "Director": "Rajkumar Hirani",
             "Released": "25 Dec 2009",
             "Ratings": [{"Source": "internet", "Value": "9/10"}]}
-        )))
-
-        get_movies_omdb_client_mock.return_value = response
+        ))
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_called_once()
@@ -51,7 +48,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = Response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.just_response()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_not_called()
@@ -64,7 +61,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = Response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.just_response()
 
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(
             movie_snapshots_registration_request)
@@ -79,14 +76,12 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        response = Response()
-        response.add(Success.of(Movie({
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.successful_response_with(Movie({
             "Title": "3 idiots",
             "Director": "Rajkumar Hirani",
             "Released": "25 Dec 2009",
             "Ratings": [{"Source": "internet", "Value": "9/10"}]}
-        )))
-        get_movies_omdb_client_mock.return_value = response
+        ))
         save_all_movie_snapshots_repository_mock.return_value = ["id_001"]
 
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(
