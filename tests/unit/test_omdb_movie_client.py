@@ -20,7 +20,7 @@ class OmdbMovieClientTest(unittest.TestCase):
                                                                 get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        omdb_movie_client.get_movies_response_for_NEW(titles=["3 idiots"])
+        omdb_movie_client.get_movies_response_for(titles=["3 idiots"])
         get_requests_mock.assert_called_once_with(
             f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}")
 
@@ -28,7 +28,7 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_fetch_multiple_movie_responses_given_multiple_movie_titles(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        omdb_movie_client.get_movies_response_for_NEW(["3 idiots", "Jumanji"])
+        omdb_movie_client.get_movies_response_for(["3 idiots", "Jumanji"])
 
         get_requests_mock.assert_has_calls(
             [call(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}"),
@@ -39,7 +39,7 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_return_a_movie_response_with_title_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual("3 idiots", movie_response.success_at(0).t().title)
 
@@ -47,7 +47,7 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_return_a_movie_response_with_director_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual("Rajkumar Hirani", movie_response.success_at(0).t().director)
 
@@ -55,7 +55,7 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_return_a_movie_response_with_release_date_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual(date(2009, 12, 25), movie_response.success_at(0).t().released_date)
 
@@ -63,7 +63,7 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_return_a_movie_response_with_a_rating_from_internet_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual("internet", movie_response.success_at(0).t().rating_source_at(0))
 
@@ -71,7 +71,7 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_return_a_movie_response_with_a_rating_of_9_on_10_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual("9/10", movie_response.success_at(0).t().rating_value_at(0))
 
@@ -80,7 +80,7 @@ class OmdbMovieClientTest(unittest.TestCase):
         omdb_movie_client = OmdbMovieClient()
         get_requests_mock.side_effect = Timeout
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual(1, movie_response.failure_count())
 
@@ -96,6 +96,6 @@ class OmdbMovieClientTest(unittest.TestCase):
 
         get_requests_mock.side_effect = mock_response
 
-        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for(["3 idiots"])
 
         self.assertEqual(1, movie_response.failure_count())

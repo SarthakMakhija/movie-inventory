@@ -11,7 +11,7 @@ from tests.application_test import application_test
 @application_test()
 class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
-    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for_NEW")
+    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for")
     def test_should_fetch_movies_given_registration_request(self,
                                                             get_movies_omdb_client_mock):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
@@ -22,7 +22,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         get_movies_omdb_client_mock.called_once_with(["3 idiots"])
 
-    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for_NEW")
+    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
     def test_should_register_movie_snapshots_given_registration_request(self,
                                                                         save_all_movie_snapshots_repository_mock,
@@ -43,7 +43,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_called_once()
 
-    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for_NEW")
+    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
     def test_should_not_register_movie_snapshots_given_no_movie_exists_for_the_given_title(self,
                                                                                            save_all_movie_snapshots_repository_mock,
@@ -56,7 +56,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_not_called()
 
-    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for_NEW")
+    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
     def test_should_return_empty_list_of_movie_snapshot_ids_given_no_registration_was_done(self,
                                                                                            save_all_movie_snapshots_repository_mock,
@@ -71,7 +71,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
         self.assertEqual([], movie_snapshot_registration_response)
 
-    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for_NEW")
+    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
     def test_should_return_a_list_of_registered_movie_snapshot_ids(self,
                                                                    save_all_movie_snapshots_repository_mock,

@@ -26,7 +26,7 @@ class MovieSnapshotsRegistrationService:
             return []
 
     def __get_movie_response_for(self, titles):
-        movie_response: Response[Movie, str] = self.omdb_client.get_movies_response_for_NEW(titles)
+        movie_response: Response[Movie, str] = self.omdb_client.get_movies_response_for(titles)
         self.logger.info(f"Successfully got a count of {movie_response.success_count()} movies with a "
                          f"failure count of {movie_response.failure_count()}, for a total of "
                          f"{len(titles)} titles")

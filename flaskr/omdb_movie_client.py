@@ -48,15 +48,15 @@ class OmdbMovieClient:
         self.api_key = Application.instance().configuration_value_for("OMDB_API_KEY")
         self.logger = LoggerFactory.instance().logger()
 
-    def get_movies_response_for_NEW(self, titles: List[str]) -> Response:
+    def get_movies_response_for(self, titles: List[str]) -> Response:
         response: Response = Response()
         for title in titles:
-            movie_response: Union[Success, Failure] = self.__get_a_movie_response_for_NEW(title)
+            movie_response: Union[Success, Failure] = self.__get_a_movie_response_for(title)
             response.add(movie_response)
 
         return response
 
-    def __get_a_movie_response_for_NEW(self, title: str) -> Union[Success[Movie], Failure[str]]:
+    def __get_a_movie_response_for(self, title: str) -> Union[Success[Movie], Failure[str]]:
         self.logger.info(f"Fetching {title} from OMDB")
         try:
             response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
