@@ -51,7 +51,8 @@ class OmdbMovieClient:
         movies: List[Movie] = []
         for title in titles:
             movie: Optional[Movie] = self.__get_a_movie_for(title)
-            movies.append(movie)
+            if movie is not None:
+                movies.append(movie)
 
         return movies
 
@@ -60,6 +61,6 @@ class OmdbMovieClient:
         try:
             response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
             return Movie(response.json())
-        except requests.RequestException as request_exception:
-            self.logger.error(f"Failed while fetching {title} with an exception", request_exception)
+        except requests.RequestException as ex:
+            self.logger.error(f"Failed while fetching {title} with an exception {ex}")
             return None

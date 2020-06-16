@@ -2,6 +2,8 @@ import unittest
 from datetime import date
 from unittest.mock import patch, call
 
+from requests import Timeout
+
 from flaskr.omdb_movie_client import OmdbMovieClient
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
@@ -68,3 +70,12 @@ class OmdbMovieClientTest(unittest.TestCase):
         movies = omdb_movie_client.get_movies_for(["3 idiots"])
 
         self.assertEqual("9/10", movies[0].rating_value_at(0))
+
+    @patch("flaskr.omdb_movie_client.requests.get")
+    def test_should_not_return_a_movie_given_request_fails_with_timeout(self, get_requests_mock):
+        omdb_movie_client = OmdbMovieClient()
+        get_requests_mock.side_effect = Timeout
+
+        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+
+        self.assertEqual(0, len(movies))
