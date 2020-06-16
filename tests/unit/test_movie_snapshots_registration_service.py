@@ -17,7 +17,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.just_response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.any_response()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         get_movies_omdb_client_mock.called_once_with(["3 idiots"])
@@ -48,7 +48,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.just_response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.any_response()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
         save_all_movie_snapshots_repository_mock.assert_not_called()
@@ -61,7 +61,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        get_movies_omdb_client_mock.return_value = ResponseBuilder.just_response()
+        get_movies_omdb_client_mock.return_value = ResponseBuilder.any_response()
 
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(
             movie_snapshots_registration_request)

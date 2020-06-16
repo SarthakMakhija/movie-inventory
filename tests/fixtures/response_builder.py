@@ -14,5 +14,5 @@ class ResponseBuilder:
         return response
 
     @staticmethod
-    def just_response() -> Response:
+    def any_response() -> Response:
         return Response()
