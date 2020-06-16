@@ -12,6 +12,7 @@ class MovieSnapshotsBuilder:
         self.__director = ""
         self.__release_date = date(1970, 1, 1)
         self.__ratings = []
+        self.__id = 0
 
     @staticmethod
     def snapshot_title(value: str):
@@ -20,6 +21,10 @@ class MovieSnapshotsBuilder:
     @staticmethod
     def any_snapshot():
         return MovieSnapshotsBuilder(title="")
+
+    def snapshot_id(self, snapshot_id: int) -> MovieSnapshotsBuilder:
+        self.__id = snapshot_id
+        return self
 
     def directed_by(self, name: str) -> MovieSnapshotsBuilder:
         self.__director = name
@@ -34,4 +39,6 @@ class MovieSnapshotsBuilder:
         return self
 
     def finish(self) -> MovieSnapshot:
-        return MovieSnapshot(self.__title, self.__director, self.__release_date, self.__ratings)
+        movie_snapshot = MovieSnapshot(self.__title, self.__director, self.__release_date, self.__ratings)
+        movie_snapshot.id = self.__id
+        return movie_snapshot

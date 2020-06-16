@@ -2,6 +2,7 @@ import unittest
 from datetime import date
 from typing import List
 
+from flaskr.entity.movie_snapshot import MovieSnapshot
 from flaskr.repository.movie_snapshots_repository import MovieSnapshotsRepository
 from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
@@ -18,10 +19,9 @@ class MovieSnapshotsResourceRepositoryIntegrationTest(unittest.TestCase):
             .add_rating_with("7/10", "internet") \
             .finish()
 
-        snapshot_ids: List[int] = MovieSnapshotsRepository().save_all([movie_snapshot])
-        snapshot_id = snapshot_ids[0]
-
-        movie_snapshot = MovieSnapshotsFixture.get_by_id(snapshot_id)
+        snapshots: List[MovieSnapshot] = MovieSnapshotsRepository().save_all([movie_snapshot])
+        movie_snapshot = snapshots[0]
+        snapshot_id = snapshots[0].id
 
         self.assertIsNotNone(snapshot_id)
         self.assertEqual("3 idiots", movie_snapshot.title)

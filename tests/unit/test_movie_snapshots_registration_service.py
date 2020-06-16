@@ -5,6 +5,7 @@ from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegis
 from flaskr.omdb_movie_client import Movie
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
 from tests.application_test import application_test
+from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.response_builder import ResponseBuilder
 
 
@@ -83,7 +84,10 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
             "Ratings": [{"Source": "internet", "Value": "9/10"}]}
         )).finish()
 
-        save_all_movie_snapshots_repository_mock.return_value = ["id_001"]
+        save_all_movie_snapshots_repository_mock.return_value = [MovieSnapshotsBuilder
+                                                                     .any_snapshot()
+                                                                     .snapshot_id("id_001")
+                                                                     .finish()]
 
         movie_snapshot_registration_response = movie_snapshots_registration_service.register_snapshots_for(
             movie_snapshots_registration_request)

@@ -21,7 +21,7 @@ class MovieSnapshotsRegistrationService:
         snapshots: List[MovieSnapshot] = [movie.to_movie_snapshot() for movie in movies]
 
         if snapshots:
-            return self.movie_snapshots_repository.save_all(snapshots)
+            return [snapshot.id for snapshot in self.movie_snapshots_repository.save_all(snapshots)]
         else:
             return []
 
