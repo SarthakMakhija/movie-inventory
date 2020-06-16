@@ -1,9 +1,10 @@
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 
 import requests
 
 from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
+from flaskr.model.response import Response, Success, Failure
 
 
 class Movie:
@@ -55,6 +56,24 @@ class OmdbMovieClient:
                 movies.append(movie)
 
         return movies
+
+    def get_movies_response_for_NEW(self, titles: List[str]) -> Response:
+        response: Response = Response()
+        for title in titles:
+            movie_response: Union[Success, Failure] = self.__get_a_movie_response_for_NEW(title)
+            response.add(movie_response)
+
+        return response
+
+    def __get_a_movie_response_for_NEW(self, title: str) -> Union[Success[Movie], Failure[str]]:
+        self.logger.info(f"Fetching {title} from OMDB")
+        try:
+            response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
+            response.raise_for_status()
+            return Success.of(Movie(response.json()))
+        except requests.RequestException as ex:
+            self.logger.error(f"Failed while fetching {title} with an exception {ex}")
+            return Failure.of(title)
 
     def __get_a_movie_for(self, title: str) -> Optional[Movie]:
         self.logger.info(f"Fetching {title} from OMDB")

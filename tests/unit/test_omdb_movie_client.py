@@ -5,7 +5,8 @@ from unittest.mock import patch, call, Mock
 import requests
 from requests import Timeout
 
-from flaskr.omdb_movie_client import OmdbMovieClient
+from flaskr.model.response import Response
+from flaskr.omdb_movie_client import OmdbMovieClient, Movie
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
@@ -15,19 +16,19 @@ from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
 class OmdbMovieClientTest(unittest.TestCase):
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_fetch_single_movie_given_single_movie_title(self,
+    def test_should_fetch_single_movie_response_given_single_movie_title(self,
                                                                 get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        omdb_movie_client.get_movies_for(titles=["3 idiots"])
+        omdb_movie_client.get_movies_response_for_NEW(titles=["3 idiots"])
         get_requests_mock.assert_called_once_with(
             f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}")
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_fetch_multiple_movies_given_multiple_movie_titles(self, get_requests_mock):
+    def test_should_fetch_multiple_movie_responses_given_multiple_movie_titles(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        omdb_movie_client.get_movies_for(["3 idiots", "Jumanji"])
+        omdb_movie_client.get_movies_response_for_NEW(["3 idiots", "Jumanji"])
 
         get_requests_mock.assert_has_calls(
             [call(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}"),
@@ -35,56 +36,56 @@ class OmdbMovieClientTest(unittest.TestCase):
             any_order=False)
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_return_a_movie_with_title_given_single_movie_title(self, get_requests_mock):
+    def test_should_return_a_movie_response_with_title_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual("3 idiots", movies[0].title)
+        self.assertEqual("3 idiots", movie_response.success_at(0).t().title)
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_return_a_movie_with_director_given_single_movie_title(self, get_requests_mock):
+    def test_should_return_a_movie_response_with_director_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual("Rajkumar Hirani", movies[0].director)
+        self.assertEqual("Rajkumar Hirani", movie_response.success_at(0).t().director)
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_return_a_movie_with_release_date_given_single_movie_title(self, get_requests_mock):
+    def test_should_return_a_movie_response_with_release_date_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual(date(2009, 12, 25), movies[0].released_date)
+        self.assertEqual(date(2009, 12, 25), movie_response.success_at(0).t().released_date)
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_return_a_movie_with_a_rating_from_internet_given_single_movie_title(self, get_requests_mock):
+    def test_should_return_a_movie_response_with_a_rating_from_internet_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual("internet", movies[0].rating_source_at(0))
+        self.assertEqual("internet", movie_response.success_at(0).t().rating_source_at(0))
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_return_a_movie_with_a_rating_of_9_on_10_given_single_movie_title(self, get_requests_mock):
+    def test_should_return_a_movie_response_with_a_rating_of_9_on_10_given_single_movie_title(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual("9/10", movies[0].rating_value_at(0))
+        self.assertEqual("9/10", movie_response.success_at(0).t().rating_value_at(0))
 
     @patch("flaskr.omdb_movie_client.requests.get")
-    def test_should_not_return_a_movie_given_request_fails_with_timeout(self, get_requests_mock):
+    def test_return_a_failure_given_request_fails_with_timeout(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
         get_requests_mock.side_effect = Timeout
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual(0, len(movies))
+        self.assertEqual(1, movie_response.failure_count())
 
     @patch("flaskr.omdb_movie_client.requests.get")
-    def test_should_not_return_a_movie_given_request_fails_with_internal_server_error(self, get_requests_mock):
+    def test_a_failure_given_request_fails_with_internal_server_error(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
 
         def mock_response(url):
@@ -95,6 +96,6 @@ class OmdbMovieClientTest(unittest.TestCase):
 
         get_requests_mock.side_effect = mock_response
 
-        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+        movie_response: Response[Movie, str] = omdb_movie_client.get_movies_response_for_NEW(["3 idiots"])
 
-        self.assertEqual(0, len(movies))
+        self.assertEqual(1, movie_response.failure_count())

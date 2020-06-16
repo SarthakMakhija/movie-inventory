@@ -8,6 +8,7 @@ def mock_omdb_movie_response(*args, **kargs):
         def __init__(self, payload, status_code):
             self.json_data = payload
             self.status_code = status_code
+            self.raise_for_status = lambda: {}
 
         def json(self):
             return self.json_data
