@@ -25,6 +25,9 @@ class Failure(Generic[E]):
     def of(e: E):
         return Failure(e)
 
+    def e(self) -> E:
+        return self.__e
+
 
 class Response(Generic[T, E]):
 
@@ -40,6 +43,9 @@ class Response(Generic[T, E]):
 
     def success_at(self, index) -> Success[T]:
         return self.__success[index]
+
+    def failure_at(self, index) -> Failure[T]:
+        return self.__failure[index]
 
     def success_count(self) -> int:
         return len(self.__success)
