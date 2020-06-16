@@ -1,7 +1,8 @@
 import unittest
 from datetime import date
-from unittest.mock import patch, call
+from unittest.mock import patch, call, Mock
 
+import requests
 from requests import Timeout
 
 from flaskr.omdb_movie_client import OmdbMovieClient
@@ -19,7 +20,8 @@ class OmdbMovieClientTest(unittest.TestCase):
         omdb_movie_client = OmdbMovieClient()
 
         omdb_movie_client.get_movies_for(titles=["3 idiots"])
-        get_requests_mock.assert_called_once_with(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}")
+        get_requests_mock.assert_called_once_with(
+            f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}")
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
     def test_should_fetch_multiple_movies_given_multiple_movie_titles(self, get_requests_mock):
@@ -27,9 +29,10 @@ class OmdbMovieClientTest(unittest.TestCase):
 
         omdb_movie_client.get_movies_for(["3 idiots", "Jumanji"])
 
-        get_requests_mock.assert_has_calls([call(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}"),
-                                            call(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}")],
-                                           any_order=False)
+        get_requests_mock.assert_has_calls(
+            [call(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}"),
+             call(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}")],
+            any_order=False)
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
     def test_should_return_a_movie_with_title_given_single_movie_title(self, get_requests_mock):
@@ -75,6 +78,22 @@ class OmdbMovieClientTest(unittest.TestCase):
     def test_should_not_return_a_movie_given_request_fails_with_timeout(self, get_requests_mock):
         omdb_movie_client = OmdbMovieClient()
         get_requests_mock.side_effect = Timeout
+
+        movies = omdb_movie_client.get_movies_for(["3 idiots"])
+
+        self.assertEqual(0, len(movies))
+
+    @patch("flaskr.omdb_movie_client.requests.get")
+    def test_should_not_return_a_movie_given_request_fails_with_internal_server_error(self, get_requests_mock):
+        omdb_movie_client = OmdbMovieClient()
+
+        def mock_response(url):
+            response_mock = Mock()
+            response_mock.status_code = 500
+            response_mock.raise_for_status.side_effect = requests.exceptions.HTTPError
+            return response_mock
+
+        get_requests_mock.side_effect = mock_response
 
         movies = omdb_movie_client.get_movies_for(["3 idiots"])
 

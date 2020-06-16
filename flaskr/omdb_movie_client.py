@@ -60,6 +60,7 @@ class OmdbMovieClient:
         self.logger.info(f"Fetching {title} from OMDB")
         try:
             response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
+            response.raise_for_status()
             return Movie(response.json())
         except requests.RequestException as ex:
             self.logger.error(f"Failed while fetching {title} with an exception {ex}")
