@@ -1,5 +1,3 @@
-from typing import List
-
 from flaskr.entity import db
 from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
 
@@ -12,12 +10,8 @@ class MovieSnapshotsFixture:
         db.session.commit()
 
     @staticmethod
-    def get_all_snapshot_ids() -> List[MovieSnapshot]:
-        return [snapshot.id for snapshot in MovieSnapshot.query.all()]
-
-    @staticmethod
-    def get_by_id(snapshot_id: int) -> MovieSnapshot:
-        return MovieSnapshot.query.get(snapshot_id)
+    def get_by_title(title: str) -> MovieSnapshot:
+        return MovieSnapshot.query.filter_by(title=title).one()
 
     @staticmethod
     def delete_all():

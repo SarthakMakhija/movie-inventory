@@ -21,8 +21,10 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
-        snapshot_ids = MovieSnapshotsFixture.get_all_snapshot_ids()
-        expected = '{{"snapshot_ids": {0}}}'.format(snapshot_ids)
+        snapshot_jumanji = MovieSnapshotsFixture.get_by_title("Jumanji")
+        snapshot_3idiots = MovieSnapshotsFixture.get_by_title("3 idiots")
+
+        expected = {'registered_snapshots': [{'id': snapshot_jumanji.id, 'title': 'Jumanji'}, {'id': snapshot_3idiots.id, 'title': '3 idiots'}], 'registration_failure_titles': []}
 
         self.assertEqual(201, response.status_code)
         self.assertEqual(expected, response.json)

@@ -22,3 +22,7 @@ class MovieSnapshotsRegistrationResponse:
     @property
     def registered_snapshot_titles(self):
         return [registered_snapshot.snapshot_title for registered_snapshot in self.__registered_snapshots]
+
+    @property
+    def registered_snapshots(self):
+        return self.__registered_snapshots
