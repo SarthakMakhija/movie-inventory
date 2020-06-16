@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Dict, Any, Optional, Union
+from typing import List, Dict, Any, Union
 
 import requests
 
@@ -48,15 +48,6 @@ class OmdbMovieClient:
         self.api_key = Application.instance().configuration_value_for("OMDB_API_KEY")
         self.logger = LoggerFactory.instance().logger()
 
-    def get_movies_for(self, titles: List[str]) -> List[Movie]:
-        movies: List[Movie] = []
-        for title in titles:
-            movie: Optional[Movie] = self.__get_a_movie_for(title)
-            if movie is not None:
-                movies.append(movie)
-
-        return movies
-
     def get_movies_response_for_NEW(self, titles: List[str]) -> Response:
         response: Response = Response()
         for title in titles:
@@ -75,12 +66,3 @@ class OmdbMovieClient:
             self.logger.error(f"Failed while fetching {title} with an exception {ex}")
             return Failure.of(title)
 
-    def __get_a_movie_for(self, title: str) -> Optional[Movie]:
-        self.logger.info(f"Fetching {title} from OMDB")
-        try:
-            response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
-            response.raise_for_status()
-            return Movie(response.json())
-        except requests.RequestException as ex:
-            self.logger.error(f"Failed while fetching {title} with an exception {ex}")
-            return None
