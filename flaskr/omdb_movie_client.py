@@ -50,8 +50,12 @@ class OmdbMovieClient:
     def get_movies_for(self, titles: List[str]) -> List[Movie]:
         movies: List[Movie] = []
         for title in titles:
-            self.logger.info(f"Fetching {title} from OMDB")
-            response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
-            movies.append(Movie(response.json()))
+            movie = self.__get_a_movie_for(title)
+            movies.append(movie)
 
         return movies
+
+    def __get_a_movie_for(self, title: str) -> Movie:
+        self.logger.info(f"Fetching {title} from OMDB")
+        response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
+        return Movie(response.json())
