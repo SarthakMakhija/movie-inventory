@@ -13,7 +13,7 @@ class ResponseTest(unittest.TestCase):
         self.assertEqual(1, success_count)
 
     def test_should_return_success_count_of_0(self):
-        response = ResponseBuilder().any_response().finish()
+        response = ResponseBuilder().empty_response().finish()
         success_count = response.success_count()
 
         self.assertEqual(0, success_count)
@@ -35,7 +35,7 @@ class ResponseTest(unittest.TestCase):
         self.assertEqual(1, failure_count)
 
     def test_should_return_failure_count_of_0(self):
-        response = ResponseBuilder().any_response().finish()
+        response = ResponseBuilder().empty_response().finish()
         failure_count = response.failure_count()
 
         self.assertEqual(0, failure_count)

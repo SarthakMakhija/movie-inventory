@@ -21,7 +21,7 @@ class ResponseBuilder:
         self.__response.add(Failure.of(t))
         return self
 
-    def any_response(self) -> ResponseBuilder:
+    def empty_response(self) -> ResponseBuilder:
         return self
 
     def finish(self) -> Response[T, E]:

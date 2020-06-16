@@ -30,9 +30,9 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
         self.logger.info(
             f"Received a request for registering movie snapshots with titles = {movie_snapshots_registration_request.titles}")
 
-        snapshot_ids = self \
+        movie_snapshots_registration_response = self \
             .movie_snapshots_registration_service \
             .register_snapshots_for(a_request=movie_snapshots_registration_request)
 
-        response = {"snapshot_ids": snapshot_ids}
+        response = {"snapshot_ids": movie_snapshots_registration_response.registered_snapshot_ids}
         return json.dumps(response), 201
