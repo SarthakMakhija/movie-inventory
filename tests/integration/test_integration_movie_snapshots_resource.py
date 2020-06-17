@@ -5,12 +5,12 @@ from datetime import date
 from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
-from tests.fixtures.test_client import TestClient
+from tests.test_client import add_test_client
 
 
 @application_test()
+@add_test_client()
 class MovieSnapshotsResourceIntegrationTest(unittest.TestCase):
-    __test_client = TestClient.create()
 
     def test_should_assert_all_snapshots(self):
         movie_snapshot = MovieSnapshotsBuilder.snapshot_title("3 idiots") \
@@ -28,7 +28,7 @@ class MovieSnapshotsResourceIntegrationTest(unittest.TestCase):
 
         expected_movie_snapshot_views = json.loads(expected_json)
 
-        response = self.__test_client.get("/movie-snapshots")
+        response = self.test_client.get("/movie-snapshots")
 
         actual_movie_snapshot_views = response.json
         self.assertEqual(expected_movie_snapshot_views, actual_movie_snapshot_views)

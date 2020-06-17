@@ -5,7 +5,7 @@ from flaskr.model.movie_registration_snapshots_response import MovieSnapshotsReg
 from flaskr.model.registered_snapshot import RegisteredSnapshot
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
-from tests.fixtures.test_client import TestClient
+from tests.test_client import add_test_client
 
 
 def empty_movie_snapshot_registration_response():
@@ -13,8 +13,8 @@ def empty_movie_snapshot_registration_response():
 
 
 @application_test()
+@add_test_client()
 class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
-    __test_client = TestClient.create()
 
     @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
     def test_should_return_Created_given_a_request_to_register_movie_snapshots(self,
@@ -22,7 +22,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value \
             = empty_movie_snapshot_registration_response()
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": ["3 idiots"]}',
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
@@ -35,7 +35,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value \
             = empty_movie_snapshot_registration_response()
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": "3 idiots"}',
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
@@ -48,7 +48,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value \
             = empty_movie_snapshot_registration_response()
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(400, response.status_code)
@@ -59,7 +59,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value \
             = MovieSnapshotsRegistrationResponse(registered_snapshots=[RegisteredSnapshot(120, "3 idiots")])
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": "3 idiots"}',
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
@@ -75,7 +75,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.return_value \
             = MovieSnapshotsRegistrationResponse(registered_snapshots=[], registration_failure_titles=["3 idiots"])
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": "3 idiots"}',
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
@@ -84,7 +84,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         self.assertEqual(expected, response.json)
 
     def test_should_return_Unauthorized_given_a_request_to_register_movie_snapshots_without_header(self):
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data='{"titles": ["3 idiots"]}',
                                            content_type="application/json")
 

@@ -5,18 +5,18 @@ from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
 from tests.fixtures.movie_snapshots_fixture import MovieSnapshotsFixture
 from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
-from tests.fixtures.test_client import TestClient
+from tests.test_client import add_test_client
 
 
 @application_test()
+@add_test_client()
 class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase):
-    __test_client = TestClient.create()
 
     @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
     def test_should_register_movie_snapshots_give_movie_titles(self, get_requests_mock):
         movie_titles = '{"titles": ["Jumanji", "3 idiots"]}'
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data=movie_titles,
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
@@ -35,7 +35,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
     def test_should_register_movie_snapshots_one_with_failure_give_movie_titles(self, get_requests_mock):
         movie_titles = '{"titles": ["Jumanji", "3 idiots", "movie_which_fails_with_omdb"]}'
 
-        response = self.__test_client.post("/movie-snapshots/registration-request",
+        response = self.test_client.post("/movie-snapshots/registration-request",
                                            data=movie_titles,
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
