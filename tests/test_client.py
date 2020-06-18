@@ -4,15 +4,13 @@ from tests.fixtures.test_client import TestClient
 def add_test_client():
 
     def class_wrapper(original_class):
-        orig_init = original_class.__init__
-
-        # Make copy of original __init__, so we can call it without recursion
+        original_init = original_class.__init__
 
         def __init__(self, *args, **kws):
             self.test_client = TestClient.create()
-            orig_init(self, *args, **kws)  # Call the original __init__
+            original_init(self, *args, **kws)
 
-        original_class.__init__ = __init__  # Set the class' __init__ to the new one
+        original_class.__init__ = __init__
         return original_class
 
     return class_wrapper
