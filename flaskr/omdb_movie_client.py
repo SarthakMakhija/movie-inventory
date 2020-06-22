@@ -47,6 +47,7 @@ class OmdbMovieClient:
         from flaskr.logger_factory import LoggerFactory
         self.api_key = Application.instance().configuration_value_for("OMDB_API_KEY")
         self.logger = LoggerFactory.instance().logger()
+        self.base_url = Application.instance().configuration_value_for("OMDB_URL")
 
     def get_movies_response_for(self, titles: List[str]) -> Response:
         response: Response = Response()
@@ -59,7 +60,7 @@ class OmdbMovieClient:
     def __get_a_movie_response_for(self, title: str) -> Union[Success[Movie], Failure[str]]:
         self.logger.info(f"Fetching {title} from OMDB")
         try:
-            response = requests.get(f"http://www.omdbapi.com/?t={title}&apikey={self.api_key}")
+            response = requests.get(f"{self.base_url}/?t={title}&apikey={self.api_key}")
             response.raise_for_status()
             return Success.of(Movie(response.json()))
         except requests.RequestException as ex:
