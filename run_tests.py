@@ -23,17 +23,13 @@ def run_migrations():
     os.system(f"python3 {base_directory}/tests/migration/migration_execution_test.py db upgrade")
 
 
-def run_integration_test():
-    os.system(f"python3 -m unittest discover -s tests/ -p test_integration_*.py")
-
-
-def run_unit_test():
-    os.system(f"python3 -m unittest discover -s tests/ -p test_unit_*.py")
+def run_test_for(pattern: str):
+    os.system(f"python3 -m unittest discover -s tests/ -p {pattern}")
 
 
 @manager.command
 def unit():
-    run_unit_test()
+    run_test_for("test_unit_*.py")
 
 
 @manager.command
@@ -41,7 +37,7 @@ def integration():
     docker_compose_up()
     time.sleep(5)
     run_migrations()
-    run_integration_test()
+    run_test_for("test_integration_*.py")
     docker_compose_down()
 
 
