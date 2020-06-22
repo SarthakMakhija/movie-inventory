@@ -24,12 +24,16 @@ def run_migrations():
 
 
 def run_tests_in(directory: str):
-    os.system(f"python3 -m unittest discover -s tests/{directory}/")
+    os.system(f"python3 -m unittest discover -s tests/{directory}")
+
+
+def run_unit_test():
+    os.system(f"python3 -m unittest discover -s tests/ -p test_unit_*.py")
 
 
 @manager.command
 def unit():
-    run_tests_in("unit")
+    run_unit_test()
 
 
 @manager.command
