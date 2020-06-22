@@ -2,10 +2,10 @@ import unittest
 
 from flask_restful import Resource
 
+from flaskr.flask_application import Application
 from flaskr.security.authentication import authenticate
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
-from tests.integration import application
 from tests.test_client import add_test_client
 
 
@@ -31,4 +31,4 @@ class FakeProtectedResource(Resource):
         return {}
 
 
-application.api.add_resource(FakeProtectedResource, "/fake-protected")
+Application.instance().api.add_resource(FakeProtectedResource, "/fake-protected")

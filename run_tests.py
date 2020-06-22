@@ -23,8 +23,8 @@ def run_migrations():
     os.system(f"python3 {base_directory}/tests/migration/migration_execution_test.py db upgrade")
 
 
-def run_tests_in(directory: str):
-    os.system(f"python3 -m unittest discover -s tests/{directory}")
+def run_integration_test():
+    os.system(f"python3 -m unittest discover -s tests/ -p test_integration_*.py")
 
 
 def run_unit_test():
@@ -41,7 +41,7 @@ def integration():
     docker_compose_up()
     time.sleep(5)
     run_migrations()
-    run_tests_in("integration")
+    run_integration_test()
     docker_compose_down()
 
 
