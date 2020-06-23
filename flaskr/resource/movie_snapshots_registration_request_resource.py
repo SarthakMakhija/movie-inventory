@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask_restful import Resource, reqparse, marshal_with
 
 from flaskr.logger_factory import LoggerFactory
@@ -35,4 +37,4 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
             .movie_snapshots_registration_service \
             .register_snapshots_for(a_request=movie_snapshots_registration_request)
 
-        return MovieSnapshotsRegistrationView.make_from(movie_snapshots_registration_response), 201
+        return MovieSnapshotsRegistrationView.make_from(movie_snapshots_registration_response), HTTPStatus.CREATED

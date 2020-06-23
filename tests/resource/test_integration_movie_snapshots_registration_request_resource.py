@@ -48,7 +48,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
                                              {'id': snapshot_3idiots.id, 'title': '3 idiots'}],
                     'registration_failure_titles': []}
 
-        self.assertEqual(201, response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, response.status_code)
         self.assertEqual(expected, response.json)
 
     @requests_mock.Mocker()
@@ -78,7 +78,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
         expected = {'registered_snapshots': [{'id': snapshot_jumanji.id, 'title': 'Jumanji'}],
                     'registration_failure_titles': ['movie_which_fails_with_omdb']}
 
-        self.assertEqual(201, response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, response.status_code)
         self.assertEqual(expected, response.json)
 
     def tearDown(self) -> None:

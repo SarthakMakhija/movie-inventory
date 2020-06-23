@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 
 from flask_restful import Resource
 
@@ -16,12 +17,12 @@ class AuthenticationTest(unittest.TestCase):
     def test_should_return_Unauthorized_given_request_does_not_contain_authorization_header(self):
         response = self.test_client.get("/fake-protected")
         status_code = response.status_code
-        self.assertEqual(401, status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, status_code)
 
     def test_should_return_Ok_given_request_contains_authorization_header(self):
         response = self.test_client.get("/fake-protected", headers=[("x-api-key", TestConfiguration.X_API_KEY)])
         status_code = response.status_code
-        self.assertEqual(200, status_code)
+        self.assertEqual(HTTPStatus.OK, status_code)
 
 
 class FakeProtectedResource(Resource):

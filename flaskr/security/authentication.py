@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import request
 from flask_restful import abort
 
@@ -9,7 +11,7 @@ def authenticate(func):
         x_api_key = Application.instance().configuration_value_for("X_API_KEY")
 
         if authorization_header == "" or authorization_header != x_api_key:
-            abort(401)
+            abort(HTTPStatus.UNAUTHORIZED)
         return func(*args, **kargs)
 
     return wrapper

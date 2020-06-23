@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 from unittest.mock import patch
 
 from flaskr.model.movie_registration_snapshots_response import MovieSnapshotsRegistrationResponse
@@ -27,7 +28,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
-        self.assertEqual(201, response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, response.status_code)
 
     @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
     def test_should_return_Created_given_a_request_to_register_movie_snapshots_with_single_title(self,
@@ -40,7 +41,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
                                            content_type="application/json",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
-        self.assertEqual(201, response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, response.status_code)
 
     @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
     def test_should_return_Bad_Request_given_a_request_to_register_movie_snapshots_without_titles(self,
@@ -51,7 +52,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         response = self.test_client.post("/movie-snapshots/registration-request",
                                            headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
-        self.assertEqual(400, response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
 
     @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
     def test_should_return_movie_snapshot_registration_view_given_a_request_to_register_movie_snapshots(self,
@@ -88,4 +89,4 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
                                            data='{"titles": ["3 idiots"]}',
                                            content_type="application/json")
 
-        self.assertEqual(401, response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
