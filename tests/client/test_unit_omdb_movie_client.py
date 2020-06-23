@@ -1,7 +1,6 @@
 import unittest
 from datetime import date
 from http import HTTPStatus
-from unittest.mock import patch, call
 
 import requests
 import requests_mock
@@ -11,31 +10,52 @@ from flaskr.model.response import Response
 from flaskr.omdb_movie_client import OmdbMovieClient, Movie
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
-from tests.fixtures.omdb_movie_response_fixture import mock_omdb_movie_response
 
 
 @application_test()
 class OmdbMovieClientTest(unittest.TestCase):
 
-    @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_fetch_single_movie_response_given_single_movie_title(self,
-                                                                         get_requests_mock):
+    @requests_mock.Mocker()
+    def test_should_return_omdb_movie_response_with_correct_uri_pattern(self, mock_request):
+        mock_request.get(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
+            {
+                "Title": "3 idiots",
+                "Director": "",
+                "Released": "1 Jan 1970",
+                "Ratings": []
+            }
+        ))
+
         omdb_movie_client = OmdbMovieClient()
 
-        omdb_movie_client.get_movies_response_for(titles=["3 idiots"])
-        get_requests_mock.assert_called_once_with(
-            f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}")
+        response = omdb_movie_client.get_movies_response_for(titles=["3 idiots"])
 
-    @patch("flaskr.omdb_movie_client.requests.get", side_effect=mock_omdb_movie_response)
-    def test_should_fetch_multiple_movie_responses_given_multiple_movie_titles(self, get_requests_mock):
+        self.assertIsNotNone(response)
+
+    @requests_mock.Mocker()
+    def test_should_return_two_omdb_movie_in_response(self, mock_request):
+        mock_request.get(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
+            {
+                "Title": "3 idiots",
+                "Director": "",
+                "Released": "1 Jan 1970",
+                "Ratings": []
+            }
+        ))
+        mock_request.get(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
+            {
+                "Title": "3 idiots",
+                "Director": "",
+                "Released": "1 Jan 1970",
+                "Ratings": []
+            }
+        ))
+
         omdb_movie_client = OmdbMovieClient()
 
-        omdb_movie_client.get_movies_response_for(["3 idiots", "Jumanji"])
+        response = omdb_movie_client.get_movies_response_for(titles=["3 idiots", "Jumanji"])
 
-        get_requests_mock.assert_has_calls(
-            [call(f"http://www.omdbapi.com/?t=3 idiots&apikey={TestConfiguration.OMDB_API_KEY}"),
-             call(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}")],
-            any_order=False)
+        self.assertEqual(2, response.success_count())
 
     @requests_mock.Mocker()
     def test_should_return_a_movie_response_with_title_given_single_movie_title(self, mock_request):
