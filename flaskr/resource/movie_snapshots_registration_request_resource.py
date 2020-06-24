@@ -1,8 +1,8 @@
+import logging
 from http import HTTPStatus
 
 from flask_restful import Resource, reqparse, marshal_with
 
-from flaskr.logger_factory import LoggerFactory
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.security.authentication import authenticate
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
@@ -24,7 +24,7 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
 
     def __init__(self):
         self.movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
-        self.logger = LoggerFactory.instance().logger()
+        self.logger = logging.getLogger(__name__)
 
     @marshal_with(fields=MovieSnapshotsRegistrationView.DISPLAYABLE_FIELDS)
     @parse_movie_snapshots_registration_request

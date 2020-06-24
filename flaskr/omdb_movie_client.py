@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from typing import List, Dict, Any, Union
 
@@ -44,9 +45,8 @@ class OmdbMovieClient:
 
     def __init__(self):
         from flaskr.flask_application import Application
-        from flaskr.logger_factory import LoggerFactory
         self.api_key = Application.instance().configuration_value_for("OMDB_API_KEY")
-        self.logger = LoggerFactory.instance().logger()
+        self.logger = logging.getLogger(__name__)
         self.base_url = Application.instance().configuration_value_for("OMDB_URL")
 
     def get_movies_response_for(self, titles: List[str]) -> Response:

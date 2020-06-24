@@ -4,12 +4,10 @@ from unittest.mock import patch
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.omdb_movie_client import Movie
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService
-from tests.application_test import application_test
 from tests.fixtures.movie_snapshots_builder import MovieSnapshotsBuilder
 from tests.fixtures.response_builder import ResponseBuilder
 
 
-@application_test()
 class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient.get_movies_response_for")

@@ -7,7 +7,7 @@ from flask_restful import Api
 
 from flaskr.configuration import Configuration
 from flaskr.entity import db
-from flaskr.logger_factory import LoggerFactory
+from flaskr.logging.logging_configurator import LoggingConfigurator
 from flaskr.rest_resource_registry import RestResourceRegistry
 
 
@@ -18,6 +18,8 @@ class Application:
         app = Flask(__name__)
         app.config.from_object(config)
 
+        LoggingConfigurator().configure()
+
         self.__app = app
         self.__api = Api(app)
         self.__config = app.config
@@ -26,7 +28,6 @@ class Application:
         db.init_app(app)
         db.app = app
 
-        LoggerFactory.init(app)
         RestResourceRegistry(self.__api)
 
     @classmethod

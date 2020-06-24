@@ -1,7 +1,7 @@
+import logging
 from typing import List
 
 from flaskr.entity.movie_snapshot import MovieSnapshot
-from flaskr.logger_factory import LoggerFactory
 from flaskr.model.movie_registration_snapshots_response import MovieSnapshotsRegistrationResponse
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.model.registered_snapshot import RegisteredSnapshot
@@ -15,7 +15,7 @@ class MovieSnapshotsRegistrationService:
     def __init__(self):
         self.movie_snapshots_repository = MovieSnapshotsRepository()
         self.omdb_client = OmdbMovieClient()
-        self.logger = LoggerFactory.instance().logger()
+        self.logger = logging.getLogger(__name__)
 
     def register_snapshots_for(self, a_request: MovieSnapshotsRegistrationRequest) -> MovieSnapshotsRegistrationResponse:
         movie_response = self.__get_movie_response_for(a_request.titles)
