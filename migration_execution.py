@@ -13,7 +13,7 @@ class MigrationExecution:
         self.__config = config
 
     def migration_manager(self) -> Manager:
-        app = Application.init_app(self.__config).flask_application
+        app = Application.create_app(self.__config)
         Migrate(app, db)
         manager = Manager(app)
         manager.add_command('db', MigrateCommand)

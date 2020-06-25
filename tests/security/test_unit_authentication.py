@@ -1,9 +1,9 @@
 import unittest
 from http import HTTPStatus
 
-from flask_restful import Resource
+from flask import current_app as app
+from flask_restful import Resource, Api
 
-from flaskr.flask_application import Application
 from flaskr.security.authentication import authenticate
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
@@ -31,5 +31,4 @@ class FakeProtectedResource(Resource):
     def get(self):
         return {}
 
-
-Application.instance().api.add_resource(FakeProtectedResource, "/fake-protected")
+Api(app).add_resource(FakeProtectedResource, "/fake-protected")

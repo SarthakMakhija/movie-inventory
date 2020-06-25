@@ -4,7 +4,8 @@ from tests.configuration.configuration_test import TestConfiguration
 
 def application_test():
     def decorator(test_item):
-        Application.init_app(TestConfiguration)
+        app = Application.create_app(TestConfiguration)
+        app.app_context().push()
         return test_item
 
     return decorator

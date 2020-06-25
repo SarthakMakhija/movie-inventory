@@ -6,6 +6,7 @@ import requests
 
 from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
 from flaskr.model.response import Response, Success, Failure
+from flask import current_app as app
 
 
 class Movie:
@@ -44,10 +45,9 @@ class Movie:
 class OmdbMovieClient:
 
     def __init__(self):
-        from flaskr.flask_application import Application
-        self.api_key = Application.instance().configuration_value_for("OMDB_API_KEY")
+        self.api_key = app.config.get("OMDB_API_KEY")
         self.logger = logging.getLogger(__name__)
-        self.base_url = Application.instance().configuration_value_for("OMDB_URL")
+        self.base_url = app.config.get("OMDB_URL")
 
     def get_movies_response_for(self, titles: List[str]) -> Response:
         response: Response = Response()
@@ -66,4 +66,3 @@ class OmdbMovieClient:
         except requests.RequestException as ex:
             self.logger.error(f"Failed while fetching {title} with an exception {ex}")
             return Failure.of(title)
-
