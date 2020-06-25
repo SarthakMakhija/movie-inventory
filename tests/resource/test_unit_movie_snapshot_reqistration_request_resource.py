@@ -90,3 +90,14 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
                                            content_type="application/json")
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+
+    @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
+    def test_should_return_http_status_INTERNAL_SERVER_ERROR_in_case_of_any_exeption(self, movie_snapshots_registration_service):
+        movie_snapshots_registration_service.return_value.register_snapshots_for.side_effect = Exception('Test')
+
+        response = self.test_client.post("/movie-snapshots/registration-request",
+                                         data='{"titles": "3 idiots"}',
+                                         content_type="application/json",
+                                         headers=[("x-api-key", TestConfiguration.X_API_KEY)])
+
+        self.assertEqual(500, response.status_code)
