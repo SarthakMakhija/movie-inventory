@@ -1,7 +1,7 @@
 from flaskr.event.domain_event import DomainEvent
 
 
-class MovieSnapshotRegisteredEvent(DomainEvent):
+class RegisteredMovieSnapshotEvent(DomainEvent):
 
     def __init__(self, snapshot_id: str):
         self.snapshot_id = snapshot_id

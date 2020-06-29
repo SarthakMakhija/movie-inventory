@@ -121,8 +121,8 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
-    @patch("flaskr.service.movie_snapshot_registered_event_publisher.MovieSnapshotRegisteredEventPublisher.publish")
-    def test_should_publish_movie_snapshot_registered_event_for_registration(self, mock_domain_event_publisher,
+    @patch("flaskr.service.registered_movie_snapshot_event_publisher.RegisteredMovieSnapshotEventPublisher.publish")
+    def test_should_publish_registered_movie_snapshot_event_for_registration(self, mock_domain_event_publisher,
                                                                              save_all_movie_snapshots_repository_mock,
                                                                              omdb_movie_client_mock):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
@@ -146,8 +146,8 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
-    @patch("flaskr.service.movie_snapshot_registered_event_publisher.MovieSnapshotRegisteredEventPublisher.publish")
-    def test_should_publish_movie_snapshot_registered_event_for_every_registration(self, mock_domain_event_publisher,
+    @patch("flaskr.service.registered_movie_snapshot_event_publisher.RegisteredMovieSnapshotEventPublisher.publish")
+    def test_should_publish_registered_movie_snapshot_event_for_every_registration(self, mock_domain_event_publisher,
                                                                                    save_all_movie_snapshots_repository_mock,
                                                                                    omdb_movie_client_mock):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots", "Jumanji"])
