@@ -9,7 +9,7 @@ from flaskr.model.registered_snapshot import RegisteredSnapshot
 from flaskr.model.response import Response
 from flaskr.omdb_movie_client import OmdbMovieClient, Movie
 from flaskr.repository.movie_snapshots_repository import MovieSnapshotsRepository
-from flaskr.service.domain_event_publisher import DomainEventPublisher
+from flaskr.service.movie_snapshot_registered_event_publisher import MovieSnapshotRegisteredEventPublisher
 
 
 class MovieSnapshotsRegistrationService:
@@ -17,7 +17,7 @@ class MovieSnapshotsRegistrationService:
     def __init__(self):
         self.movie_snapshots_repository = MovieSnapshotsRepository()
         self.omdb_client = OmdbMovieClient()
-        self.domain_event_publisher = DomainEventPublisher()
+        self.movie_snapshot_registered_event_publisher = MovieSnapshotRegisteredEventPublisher()
         self.logger = logging.getLogger(__name__)
 
     def register_snapshots_for(self,
@@ -49,4 +49,4 @@ class MovieSnapshotsRegistrationService:
 
     def __publish_movie_snapshot_registered_events(self, registered_snapshots) -> None:
         for registered_snapshot in registered_snapshots:
-            self.domain_event_publisher.publish(MovieSnapshotRegisteredEvent(registered_snapshot.snapshot_id))
+            self.movie_snapshot_registered_event_publisher.publish(MovieSnapshotRegisteredEvent(registered_snapshot.snapshot_id))
