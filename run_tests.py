@@ -23,19 +23,9 @@ def run_migrations():
     os.system(f"python3 {base_directory}/tests/migration/migration_execution_test.py db upgrade")
 
 
-def create_sns_topic():
-    os.system(f"aws sns create-topic --name app-events-topic --endpoint-url=http://localhost:4575")
-
-
-def create_sqs_queue():
-    os.system(f"aws sqs create-queue --queue-name service-queue --endpoint-url=http://localhost:4576")
-    os.system(
-        f"aws sns subscribe --topic-arn=arn:aws:sns:us-east-1:000000000000:app-events-topic --protocol sqs --notification-endpoint http://localhost:4576/queue/service-queue --attributes RawMessageDelivery=true --endpoint-url=http://localhost:4575")
-
-
 def setup_event_store():
-    create_sns_topic()
-    create_sqs_queue()
+    os.system(
+        f"aws cloudformation create-stack --template-body file://tests/template.yaml --stack-name service-stack --region=us-east-1 --endpoint-url=http://localhost:4581")
 
 
 def run_test_for(pattern: str):
@@ -50,7 +40,7 @@ def unit():
 @manager.command
 def integration():
     docker_compose_up()
-    time.sleep(30)
+    time.sleep(20)
     run_migrations()
     setup_event_store()
     run_test_for("test_integration_*.py")

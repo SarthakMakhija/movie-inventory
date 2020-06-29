@@ -12,9 +12,6 @@ class SimpleNotificationServiceClient:
         self.topic_arn = app.config.get("SNS_TOPIC_NAME")
 
     def publish(self, event: Dict):
-        result = self.client.publish(TopicArn=self.topic_arn,
-                                     Message=json.dumps({'default': json.dumps(event)}),
-                                     MessageStructure='json')
-        print(self.topic_arn)
-        print(app.config.get("SNS_ENDPOINT_URL"))
-        print(result)
+        self.client.publish(TopicArn=self.topic_arn,
+                            Message=json.dumps({'default': json.dumps(event)}),
+                            MessageStructure='json')

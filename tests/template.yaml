@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  Queue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: service-queue
+
+  Topic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: app-events-topic
+
+  QueueToTopicSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt Queue.Arn
+      RawMessageDelivery: True
+      TopicArn: !Ref Topic
+      Protocol: sqs
