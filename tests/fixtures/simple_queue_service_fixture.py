@@ -11,8 +11,8 @@ class SimpleQueueServiceFixture:
         self.queue_url = app.config.get("SQS_QUEUE_NAME")
 
     def read_message(self):
-        response = self.client.read_message(QueueUrl=self.queue_url)
+        response = self.client.receive_message(QueueUrl=self.queue_url)
         return json.loads(response['Messages'][0]["Body"])["default"]
 
     def delete_all(self):
-        self.client.delete_all(QueueUrl=self.queue_url)
+        self.client.purge_queue(QueueUrl=self.queue_url)
