@@ -8,3 +8,12 @@ services:
       - POSTGRES_DB=movie_snapshots
     ports:
       - 5432:5432
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    environment:
+        - SERVICES=${SERVICES- }
+        - DEBUG=${DEBUG- }
+    ports:
+      - "4566-4599:4566-4599"
