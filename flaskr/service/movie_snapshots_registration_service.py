@@ -2,14 +2,14 @@ import logging
 from typing import List
 
 from flaskr.entity.movie_snapshot import MovieSnapshot
-from flaskr.event.registered_movie_snapshot_event import RegisteredMovieSnapshotEvent
+from flaskr.event.movie_snapshot_registered_event import MovieSnapshotRegisteredEvent
 from flaskr.model.movie_registration_snapshots_response import MovieSnapshotsRegistrationResponse
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.model.registered_snapshot import RegisteredSnapshot
 from flaskr.model.response import Response
 from flaskr.omdb_movie_client import OmdbMovieClient, Movie
 from flaskr.repository.movie_snapshots_repository import MovieSnapshotsRepository
-from flaskr.service.registered_movie_snapshot_event_publisher import RegisteredMovieSnapshotEventPublisher
+from flaskr.service.movie_snapshot_registered_event_publisher import MovieSnapshotRegisteredEventPublisher
 
 
 class MovieSnapshotsRegistrationService:
@@ -17,7 +17,7 @@ class MovieSnapshotsRegistrationService:
     def __init__(self):
         self.movie_snapshots_repository = MovieSnapshotsRepository()
         self.omdb_client = OmdbMovieClient()
-        self.movie_snapshot_registered_event_publisher = RegisteredMovieSnapshotEventPublisher()
+        self.movie_snapshot_registered_event_publisher = MovieSnapshotRegisteredEventPublisher()
         self.logger = logging.getLogger(__name__)
 
     def register_snapshots_for(self,
@@ -49,4 +49,4 @@ class MovieSnapshotsRegistrationService:
 
     def __publish_movie_snapshot_registered_events(self, registered_snapshots) -> None:
         for registered_snapshot in registered_snapshots:
-            self.movie_snapshot_registered_event_publisher.publish(RegisteredMovieSnapshotEvent(registered_snapshot.snapshot_id))
+            self.movie_snapshot_registered_event_publisher.publish(MovieSnapshotRegisteredEvent(registered_snapshot.snapshot_id))
