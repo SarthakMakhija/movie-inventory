@@ -9,12 +9,13 @@ requests-mock = "*"
 [packages]
 flask = "1.1.2"
 flask-restful = "0.3.8"
-flask-migrate = "*"
-flask-script = "*"
-flask-sqlalchemy = "*"
-psycopg2 = "*"
-requests = "*"
-pyyaml = "*"
+flask-migrate = "2.5.3"
+flask-script = "2.0.6"
+flask-sqlalchemy = "2.4.3"
+requests = "2.24.0"
+pyyaml = "5.3.1"
+psycopg2 = "2.6.1"
+
 
 [requires]
 python_version = "3.8"
