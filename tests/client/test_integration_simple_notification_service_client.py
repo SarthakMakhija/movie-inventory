@@ -10,7 +10,7 @@ from tests.fixtures.simple_queue_service_fixture import SimpleQueueServiceFixtur
 class SimpleNotificationServiceClientIntegrationTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        SimpleQueueServiceFixture().purge_queue()
+        SimpleQueueServiceFixture().delete_all()
 
     def test_should_publish_an_event_to_amazon_simple_notification_service(self):
         simple_notification_service_client = SimpleNotificationServiceClient()
@@ -20,5 +20,5 @@ class SimpleNotificationServiceClientIntegrationTest(unittest.TestCase):
         }
         simple_notification_service_client.publish(event)
 
-        response_event = SimpleQueueServiceFixture().receive_message()
+        response_event = SimpleQueueServiceFixture().read_message()
         self.assertEqual("notification-100", json.loads(response_event)["id"])
