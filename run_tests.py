@@ -39,6 +39,7 @@ def unit():
 
 @manager.command
 def integration():
+    docker_compose_down()
     docker_compose_up()
     time.sleep(10)
     run_migrations()
