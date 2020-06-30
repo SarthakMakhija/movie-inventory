@@ -17,7 +17,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        movie_snapshot_registered_event_publisher_mock.return_value.publish_event_for.return_value = None
+        movie_snapshot_registered_event_publisher_mock.return_value.publish_events_for.return_value = None
         omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder().empty_response().finish()
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
@@ -33,7 +33,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        movie_snapshot_registered_event_publisher_mock.return_value.publish_event_for.return_value = None
+        movie_snapshot_registered_event_publisher_mock.return_value.publish_events_for.return_value = None
         omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder() \
             .successful_response_with(
             Movie({
@@ -58,7 +58,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        movie_snapshot_registered_event_publisher_mock.return_value.publish_event_for.return_value = None
+        movie_snapshot_registered_event_publisher_mock.return_value.publish_events_for.return_value = None
         omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder() \
             .failure_response_with("3 idiots").finish()
 
@@ -73,7 +73,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        movie_snapshot_registered_event_publisher_mock.return_value.publish_event_for.return_value = None
+        movie_snapshot_registered_event_publisher_mock.return_value.publish_events_for.return_value = None
         omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder() \
             .failure_response_with("3 idiots").finish()
 
@@ -93,7 +93,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        movie_snapshot_registered_event_publisher_mock.return_value.publish_event_for.return_value = None
+        movie_snapshot_registered_event_publisher_mock.return_value.publish_events_for.return_value = None
         omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder() \
             .successful_response_with(
                 Movie({
@@ -124,7 +124,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
-        movie_snapshot_registered_event_publisher_mock.return_value.publish_event_for.return_value = None
+        movie_snapshot_registered_event_publisher_mock.return_value.publish_events_for.return_value = None
         omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder()\
             .successful_response_with(
                 Movie({

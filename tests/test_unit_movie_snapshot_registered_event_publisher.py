@@ -15,7 +15,7 @@ class MovieSnapshotRegisteredEventPublisherTest(TestCase):
 
         registered_snapshot = RegisteredSnapshot("id_001", "3 iditions")
 
-        movie_snapshot_registered_event_publisher.publish_event_for([registered_snapshot])
+        movie_snapshot_registered_event_publisher.publish_events_for([registered_snapshot])
 
         sns_client_mock.return_value.publish.assert_called()
 
@@ -26,7 +26,7 @@ class MovieSnapshotRegisteredEventPublisherTest(TestCase):
 
         registered_snapshot = RegisteredSnapshot("id_001", "3 iditions")
 
-        movie_snapshot_registered_event_publisher.publish_event_for([registered_snapshot])
+        movie_snapshot_registered_event_publisher.publish_events_for([registered_snapshot])
 
         sns_client_mock.return_value.publish.assert_called_with(MovieSnapshotRegisteredEvent("id_001"))
 
@@ -38,7 +38,7 @@ class MovieSnapshotRegisteredEventPublisherTest(TestCase):
         registered_snapshot_1 = RegisteredSnapshot("id_001", "3 iditions")
         registered_snapshot_2 = RegisteredSnapshot("id_002", "Jumanji")
 
-        movie_snapshot_registered_event_publisher.publish_event_for([
+        movie_snapshot_registered_event_publisher.publish_events_for([
             registered_snapshot_1,
             registered_snapshot_2])
 

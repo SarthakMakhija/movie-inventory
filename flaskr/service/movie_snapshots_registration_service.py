@@ -26,7 +26,7 @@ class MovieSnapshotsRegistrationService:
 
         registered_snapshots = self.__register_snapshots_for(movies)
 
-        self.movie_snapshot_registered_event_publisher.publish_event_for(registered_snapshots)
+        self.movie_snapshot_registered_event_publisher.publish_events_for(registered_snapshots)
 
         return MovieSnapshotsRegistrationResponse(registered_snapshots, movie_response.all_failure_t())
 

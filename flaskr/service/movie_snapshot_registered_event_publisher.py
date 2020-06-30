@@ -10,6 +10,6 @@ class MovieSnapshotRegisteredEventPublisher:
     def __init__(self):
         self.sns_client = SimpleNotificationServiceClient()
 
-    def publish_event_for(self, registered_snapshots: List[RegisteredSnapshot]):
+    def publish_events_for(self, registered_snapshots: List[RegisteredSnapshot]):
         for registered_snapshot in registered_snapshots:
             self.sns_client.publish(MovieSnapshotRegisteredEvent(registered_snapshot.snapshot_id))
