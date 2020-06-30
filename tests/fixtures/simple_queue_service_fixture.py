@@ -13,7 +13,7 @@ class SimpleQueueServiceFixture:
 
     def read_message(self) -> Dict:
         response = self.client.receive_message(QueueUrl=self.queue_url)
-        return json.loads(json.loads(response['Messages'][0]["Body"])["default"])
+        return json.loads(json.loads(response['Messages'][0]["Body"])["Message"])
 
     def delete_all(self):
         self.client.purge_queue(QueueUrl=self.queue_url)

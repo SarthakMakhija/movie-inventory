@@ -11,7 +11,7 @@ services:
 
   localstack:
     container_name: localstack
-    image: localstack/localstack
+    image: localstack/localstack:0.10.6
     environment:
       - SERVICES= sqs,sns,cloudformation
       - DEBUG=1
