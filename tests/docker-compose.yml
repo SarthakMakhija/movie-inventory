@@ -13,7 +13,7 @@ services:
     container_name: localstack
     image: localstack/localstack
     environment:
-        - SERVICES=${SERVICES- }
-        - DEBUG=1
+      - SERVICES= sqs,sns,cloudformation
+      - DEBUG=1
     ports:
       - "4566-4599:4566-4599"
