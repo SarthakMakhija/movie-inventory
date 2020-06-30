@@ -121,10 +121,11 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
 
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
-    @patch("flaskr.service.movie_snapshot_registered_event_publisher.MovieSnapshotRegisteredEventPublisher.publish")
-    def test_should_publish_events_for_registered_snapshots(self, mock_domain_event_publisher,
-                                                                             save_all_movie_snapshots_repository_mock,
-                                                                             omdb_movie_client_mock):
+    @patch("flaskr.service.movie_snapshot_registered_event_publisher.MovieSnapshotRegisteredEventPublisher.publish_event_for")
+    def test_should_publish_events_for_registered_snapshots(self,
+                                                            publish_event_for_movie_snapshot_registered_event_publisher_mock,
+                                                            save_all_movie_snapshots_repository_mock,
+                                                            omdb_movie_client_mock):
         movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots"])
         movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
 
@@ -137,51 +138,10 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
             )).finish()
 
         save_all_movie_snapshots_repository_mock.return_value = [MovieSnapshotsBuilder
-                                                                     .any_snapshot()
+                                                                     .snapshot_title("3 idiots")
+                                                                     .snapshot_id(111)
                                                                      .finish()]
 
         movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
 
-        mock_domain_event_publisher.assert_called_once()
-
-    @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient")
-    @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
-    @patch("flaskr.service.movie_snapshot_registered_event_publisher.MovieSnapshotRegisteredEventPublisher.publish")
-    def test_should_publish_movie_snapshot_registered_event_for_every_registration(self, mock_domain_event_publisher,
-                                                                                   save_all_movie_snapshots_repository_mock,
-                                                                                   omdb_movie_client_mock):
-        movie_snapshots_registration_request = MovieSnapshotsRegistrationRequest(titles=["3 idiots", "Jumanji"])
-        movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
-
-        omdb_movie_client_mock.return_value.get_movies_response_for.return_value = ResponseBuilder().successful_response_with(
-            Movie({
-                "Title": "3 idiots",
-                "Director": "",
-                "Released": "1 Jan 1970",
-                "Ratings": []
-            })
-        ) \
-            .successful_response_with(
-            Movie({
-                "Title": "Jumanji",
-                "Director": "",
-                "Released": "1 Jan 1970",
-                "Ratings": []
-            })
-        ) \
-            .finish()
-
-        save_all_movie_snapshots_repository_mock.return_value = [MovieSnapshotsBuilder
-                                                                     .snapshot_title("3 idiots")
-                                                                     .snapshot_id("id_100")
-                                                                     .finish(),
-                                                                 MovieSnapshotsBuilder
-                                                                     .snapshot_title("Jumanji")
-                                                                     .snapshot_id("id_101")
-                                                                     .finish()
-                                                                 ]
-
-        movie_snapshots_registration_service.register_snapshots_for(movie_snapshots_registration_request)
-
-        self.assertEqual(mock_domain_event_publisher.call_args_list[0].args[0].snapshot_id, "id_100")
-        self.assertEqual(mock_domain_event_publisher.call_args_list[1].args[0].snapshot_id, "id_101")
+        publish_event_for_movie_snapshot_registered_event_publisher_mock.assert_called_once()

@@ -27,7 +27,7 @@ class MovieSnapshotsRegistrationService:
 
         registered_snapshots = self.__register_snapshots_for(movies)
 
-        self.__publish_movie_snapshot_registered_events(registered_snapshots)
+        self.movie_snapshot_registered_event_publisher.publish_event_for(registered_snapshots)
 
         return MovieSnapshotsRegistrationResponse(registered_snapshots, movie_response.all_failure_t())
 
@@ -46,7 +46,3 @@ class MovieSnapshotsRegistrationService:
                     for snapshot in self.movie_snapshots_repository.save_all(snapshots)]
         else:
             return []
-
-    def __publish_movie_snapshot_registered_events(self, registered_snapshots) -> None:
-        for registered_snapshot in registered_snapshots:
-            self.movie_snapshot_registered_event_publisher.publish(MovieSnapshotRegisteredEvent(registered_snapshot.snapshot_id))
