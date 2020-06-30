@@ -86,7 +86,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
         self.assertEqual(expected, response.json)
 
     @requests_mock.Mocker()
-    def test_should_publish_movie_snapshots_registered_event_for_registered_snapshots(self, mock_request):
+    def test_should_publish_movie_snapshot_registered_event_for_registered_snapshots(self, mock_request):
         movie_titles = '{"titles": ["Jumanji", "movie_which_fails_with_omdb"]}'
 
         mock_request.get(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
