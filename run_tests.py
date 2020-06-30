@@ -41,7 +41,7 @@ def unit():
 def integration():
     docker_compose_down()
     docker_compose_up()
-    time.sleep(25)
+    time.sleep(10)
     run_migrations()
     create_localstack_resources()
     run_test_for("test_integration_*.py")
