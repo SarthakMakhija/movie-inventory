@@ -28,7 +28,7 @@ class MovieSnapshotRegisteredEventPublisherTest(TestCase):
 
         movie_snapshot_registered_event_publisher.publish_events_for([registered_snapshot])
 
-        sns_client_mock.return_value.publish.assert_called_with(MovieSnapshotRegisteredEvent("id_001"))
+        self.assertEqual(sns_client_mock.return_value.publish.call_args_list[0].args[0].snapshot_id, "id_001")
 
     @patch("flaskr.service.movie_snapshot_registered_event_publisher.SimpleNotificationServiceClient")
     def test_should_publish_movie_snapshot_registered_events_given_multiple_registered_snapshots(self,
