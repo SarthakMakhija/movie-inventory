@@ -112,6 +112,8 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
         event = self.simple_queue_service_fixture.read_message()
 
         self.assertEqual(event['snapshot_id'], snapshot_jumanji.id)
+        self.assertEqual(event['type'], "com.mydomain.movie_inventory.movie_snapshot_registered")
+
 
     def tearDown(self) -> None:
         MovieSnapshotsFixture.delete_all()
