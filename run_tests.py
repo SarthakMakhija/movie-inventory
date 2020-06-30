@@ -23,7 +23,7 @@ def run_migrations():
     os.system(f"python3 {base_directory}/tests/migration/migration_execution_test.py db upgrade")
 
 
-def setup_event_store():
+def create_localstack_resources():
     os.system(
         f"aws cloudformation create-stack --template-body file://tests/template.yaml --stack-name service-stack --region=us-east-1 --endpoint-url=http://localhost:4581")
 
@@ -40,9 +40,9 @@ def unit():
 @manager.command
 def integration():
     docker_compose_up()
-    time.sleep(20)
+    time.sleep(10)
     run_migrations()
-    setup_event_store()
+    create_localstack_resources()
     run_test_for("test_integration_*.py")
     docker_compose_down()
 

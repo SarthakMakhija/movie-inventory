@@ -2,7 +2,6 @@ import logging
 from typing import List
 
 from flaskr.entity.movie_snapshot import MovieSnapshot
-from flaskr.event.movie_snapshot_registered_event import MovieSnapshotRegisteredEvent
 from flaskr.model.movie_registration_snapshots_response import MovieSnapshotsRegistrationResponse
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.model.registered_snapshot import RegisteredSnapshot
