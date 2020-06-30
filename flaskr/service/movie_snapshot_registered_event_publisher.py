@@ -10,10 +10,6 @@ class MovieSnapshotRegisteredEventPublisher:
     def __init__(self):
         self.sns_client = AwsSnsClient()
 
-    def publish(self, movie_snapshot_registered_event: MovieSnapshotRegisteredEvent):
-        self.sns_client.publish(movie_snapshot_registered_event)
-        pass
-
     def publish_event_for(self, registered_snapshots: List[RegisteredSnapshot]):
         for registered_snapshot in registered_snapshots:
             self.sns_client.publish(MovieSnapshotRegisteredEvent(registered_snapshot.snapshot_id))
