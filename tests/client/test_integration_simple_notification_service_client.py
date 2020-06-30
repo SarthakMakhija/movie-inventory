@@ -28,4 +28,4 @@ class SimpleNotificationServiceClientIntegrationTest(unittest.TestCase):
 
         response_event = SimpleQueueServiceFixture().read_message()
 
-        self.assertEqual("event_test_id_001", json.loads(response_event)["test_id"])
+        self.assertEqual("event_test_id_001", response_event["test_id"])
