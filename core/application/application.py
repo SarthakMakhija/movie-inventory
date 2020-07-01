@@ -5,6 +5,7 @@ from typing import Type
 from flask import Flask
 from flask_restful import Api
 
+from core.config.application_config import ApplicationConfig
 from core.config.configuration import Configuration
 from core.logging_.logging_configurator import LoggingConfigurator
 from core.tracing.xray_tracing_configurator import XrayTracingConfigurator
@@ -19,9 +20,10 @@ class Application:
 
         self.__app = app
         self.__api = Api(app)
-        self.__config = app.config
 
         config_instance = config()
+
+        ApplicationConfig.initialize(app.config)
 
         LoggingConfigurator(config_instance.LOGGING_CONFIG_PATH).configure()
 
@@ -45,5 +47,3 @@ class Application:
     def instance(cls):
         return cls.__INSTANCE
 
-    def configuration_value_for(self, key):
-        return self.__config[key]

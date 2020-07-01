@@ -4,9 +4,9 @@ from typing import List, Dict, Any, Union
 
 import requests
 
+from core.config.application_config import ApplicationConfig
 from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
 from flaskr.model.response import Response, Success, Failure
-from flask import current_app as app
 
 
 class Movie:
@@ -45,9 +45,10 @@ class Movie:
 class OmdbMovieClient:
 
     def __init__(self):
-        self.api_key = app.config.get("OMDB_API_KEY")
+        application_config = ApplicationConfig.instance()
+        self.api_key = application_config.get_or_fail("OMDB_API_KEY")
         self.logger = logging.getLogger(__name__)
-        self.base_url = app.config.get("OMDB_URL")
+        self.base_url = application_config.get_or_fail("OMDB_URL")
 
     def get_movies_response_for(self, titles: List[str]) -> Response:
         response: Response = Response()

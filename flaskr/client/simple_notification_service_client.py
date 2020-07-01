@@ -1,18 +1,20 @@
 import json
 
 import boto3
-from flask import current_app as app
+
+from core.config.application_config import ApplicationConfig
 from flaskr.event.domain_event import DomainEvent
 
 
 class SimpleNotificationServiceClient:
 
     def __init__(self):
+        application_config = ApplicationConfig.instance()
         self.client = boto3.client(service_name="sns",
-                                   endpoint_url=app.config.get("SNS_ENDPOINT_URL"),
-                                   region_name=app.config.get("AWS_REGION")
+                                   endpoint_url=application_config.get_or_fail("SNS_ENDPOINT_URL"),
+                                   region_name=application_config.get_or_fail("AWS_REGION")
                                    )
-        self.topic_arn = app.config.get("SNS_TOPIC_NAME")
+        self.topic_arn = application_config.get_or_fail("SNS_TOPIC_NAME")
 
     def publish(self, event: DomainEvent):
         self.client.publish(TopicArn=self.topic_arn,

@@ -1,7 +1,7 @@
-from flask import current_app as app
+from core.application.application import Application
 
 
 class TestClient:
     @staticmethod
     def create():
-        return app.test_client()
+        return Application.instance().flask_application.test_client()
