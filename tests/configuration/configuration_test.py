@@ -1,3 +1,5 @@
+from typing import Set
+
 from flaskr.configuration import Configuration
 
 
@@ -11,3 +13,4 @@ class TestConfiguration(Configuration):
     SQS_ENDPOINT_URL = "http://localhost:4576"
     SQS_QUEUE_NAME = "http://localhost:4576/queue/service-queue"
     AWS_REGION = "us-east-1"
+    TRACING_PATCHABLE_LIBRARIES: Set[str] = []
