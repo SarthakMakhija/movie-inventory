@@ -117,7 +117,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
     @patch("flaskr.service.movie_snapshots_registration_service.MovieSnapshotRegisteredEventPublisher")
-    def test_should_return_movie_registration_response_with_snapshot_ids(self,
+    def test_should_return_movie_registration_response_with_title(self,
                                                                          movie_snapshot_registered_event_publisher_mock,
                                                                          save_all_movie_snapshots_repository_mock,
                                                                          omdb_movie_client_mock):
@@ -146,7 +146,7 @@ class MovieSnapshotsRegistrationServiceTest(unittest.TestCase):
     @patch("flaskr.service.movie_snapshots_registration_service.OmdbMovieClient")
     @patch("flaskr.service.movie_snapshots_service.MovieSnapshotsRepository.save_all")
     @patch("flaskr.service.movie_snapshots_registration_service.MovieSnapshotRegisteredEventPublisher")
-    def test_should_publish_events_for_registered_snapshots(self,
+    def test_should_publish_movie_snapshot_registered_events_for_registered_snapshots(self,
                                                             movie_snapshot_registered_event_publisher_mock,
                                                             save_all_movie_snapshots_repository_mock,
                                                             omdb_movie_client_mock):
