@@ -41,7 +41,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
         ))
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         data=movie_titles,
+                                         json=movie_titles,
                                          content_type="application/json",
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
@@ -73,7 +73,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
             status_code= HTTPStatus.INTERNAL_SERVER_ERROR)
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         data=movie_titles,
+                                         json=movie_titles,
                                          content_type="application/json",
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
@@ -103,7 +103,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
 
         self.test_client.post("/movie-snapshots/registration-request",
-                              data=movie_titles,
+                              json=movie_titles,
                               content_type="application/json",
                               headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
