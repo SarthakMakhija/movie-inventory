@@ -1,10 +1,6 @@
-import os
-from pathlib import Path
 from typing import Set
 
 from flaskr.configuration import Configuration
-
-dir_path = os.path.abspath(os.path.dirname(__file__))
 
 
 class TestConfiguration(Configuration):
@@ -17,5 +13,4 @@ class TestConfiguration(Configuration):
     SQS_ENDPOINT_URL = "http://localhost:4576"
     SQS_QUEUE_NAME = "http://localhost:4576/queue/service-queue"
     AWS_REGION = "us-east-1"
-    LOGGING_CONFIG_PATH: Path = Path(f"{dir_path}/logging_test_config.yaml")
     TRACING_PATCHABLE_LIBRARIES: Set[str] = []
