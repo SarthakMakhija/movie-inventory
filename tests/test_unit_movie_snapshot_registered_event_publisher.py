@@ -37,12 +37,9 @@ class MovieSnapshotRegisteredEventPublisherTest(TestCase):
         registered_snapshot_1 = RegisteredSnapshot("id_001", "3 idiots")
         registered_snapshot_2 = RegisteredSnapshot("id_002", "Jumanji")
 
-        movie_snapshot_registered_event_publisher.publish_events_for([
-            registered_snapshot_1,
-            registered_snapshot_2])
+        movie_snapshot_registered_event_publisher.publish_events_for([registered_snapshot_1, registered_snapshot_2])
 
-        self.assertEqual(sns_client_mock.return_value.publish.call_args_list[0].args[0].snapshot_id, "id_001")
-        self.assertEqual(sns_client_mock.return_value.publish.call_args_list[1].args[0].snapshot_id, "id_002")
+        self.assertEqual(sns_client_mock.return_value.publish.call_count, 2)
 
     @patch("flaskr.service.movie_snapshot_registered_event_publisher.SimpleNotificationServiceClient")
     def test_should_handle_client_failure_gracefully(self, sns_client_mock):
