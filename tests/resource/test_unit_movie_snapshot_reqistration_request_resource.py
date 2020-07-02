@@ -41,7 +41,6 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
 
         self.assertEqual(HTTPStatus.CREATED, response.status_code)
 
-    @unittest.skip("failing for type error. need to add support in library")
     @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
     def test_should_return_Bad_Request_given_a_request_to_register_movie_snapshots_without_titles(self,
                                                                                                   movie_snapshots_registration_service):
@@ -52,6 +51,17 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
+
+    @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
+    def test_should_return_Bad_Request_with_message_given_a_request_to_register_movie_snapshots_without_titles(self,
+                                                                                                  movie_snapshots_registration_service):
+        movie_snapshots_registration_service.return_value.register_snapshots_for.return_value \
+            = empty_movie_snapshot_registration_response()
+
+        response = self.test_client.post("/movie-snapshots/registration-request",
+                                         headers=[("x-api-key", TestConfiguration.X_API_KEY)])
+
+        self.assertEqual("titles is mandatory", response.json["message"])
 
     @patch("flaskr.resource.movie_snapshots_registration_request_resource.MovieSnapshotsRegistrationService")
     def test_should_return_movie_snapshot_registration_view_given_a_request_to_register_movie_snapshots(self,

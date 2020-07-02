@@ -1,4 +1,3 @@
-import json
 import unittest
 
 from flaskr.client.simple_notification_service_client import SimpleNotificationServiceClient
