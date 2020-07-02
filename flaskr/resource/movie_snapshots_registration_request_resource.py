@@ -18,7 +18,7 @@ class MovieSnapshotsRegistrationRequestResource(Resource):
     method_decorators = [authenticate]
 
     ErrorRegistry.register_error(UndeserializableJsonException,
-                                 HTTPErrorResponse(status=HTTPStatus.BAD_REQUEST, message="titles is mandatory"))
+                                 HTTPErrorResponse(status_code=HTTPStatus.BAD_REQUEST, message="titles is mandatory"))
 
     def __init__(self):
         self.movie_snapshots_registration_service = MovieSnapshotsRegistrationService()
