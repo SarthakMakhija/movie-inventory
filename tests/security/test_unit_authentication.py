@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from flask_restful import Resource
 
-from core.application.application import Application
+from ipe_core.application.core_application import CoreApplication
 from flaskr.security.authentication import authenticate
 from tests.application_test import application_test
 from tests.configuration.configuration_test import TestConfiguration
@@ -31,4 +31,4 @@ class FakeProtectedResource(Resource):
     def get(self):
         return {}
 
-Application.instance().api.add_resource(FakeProtectedResource, "/fake-protected")
+CoreApplication.instance().api.add_resource(FakeProtectedResource, "/fake-protected")

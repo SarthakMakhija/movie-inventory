@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Type
 
-from core.entrypoint import init_app
+from ipe_core.entrypoint import init_app
 from flaskr.configuration import Configuration
 from flaskr.entity import db
 from flaskr.rest_resource_registry import RestResourceRegistry

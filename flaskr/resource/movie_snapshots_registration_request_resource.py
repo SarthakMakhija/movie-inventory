@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from flask_restful import Resource, marshal_with
 
-from core.json_.json_deserializer_decorator import deserialize
+from ipe_core.json_.json_deserializer_decorator import deserialize
 from flaskr.model.movie_snapshot_registration_request import MovieSnapshotsRegistrationRequest
 from flaskr.security.authentication import authenticate
 from flaskr.service.movie_snapshots_registration_service import MovieSnapshotsRegistrationService

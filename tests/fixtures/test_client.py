@@ -1,7 +1,7 @@
-from core.application.application import Application
+from ipe_core.application.core_application import CoreApplication
 
 
 class TestClient:
     @staticmethod
     def create():
-        return Application.instance().flask_application.test_client()
+        return CoreApplication.instance().flask_application.test_client()

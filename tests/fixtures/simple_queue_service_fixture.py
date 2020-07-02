@@ -3,13 +3,13 @@ from typing import Dict
 
 import boto3
 
-from core.config.application_config import ApplicationConfig
+from ipe_core.config.application_configuration_store import ApplicationConfigurationStore
 
 
 class SimpleQueueServiceFixture:
 
     def __init__(self):
-        application_config = ApplicationConfig.instance()
+        application_config = ApplicationConfigurationStore.instance()
         self.client = boto3.client(service_name="sqs", endpoint_url=application_config.get_or_fail("SQS_ENDPOINT_URL"))
         self.queue_url = application_config.get_or_fail("SQS_QUEUE_NAME")
 

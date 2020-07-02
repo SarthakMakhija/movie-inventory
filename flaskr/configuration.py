@@ -2,7 +2,7 @@ from os import environ
 from pathlib import Path
 from typing import Set
 
-from core.config.configuration import Configuration as CoreConfiguration
+from ipe_core.config.core_configuration import CoreConfiguration
 from settings import PROJECT_ROOT
 
 

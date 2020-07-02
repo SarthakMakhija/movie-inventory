@@ -4,7 +4,7 @@ from typing import List, Dict, Any, Union
 
 import requests
 
-from core.config.application_config import ApplicationConfig
+from ipe_core.config.application_configuration_store import ApplicationConfigurationStore
 from flaskr.entity.movie_snapshot import MovieSnapshot, MovieSnapshotRating
 from flaskr.model.response import Response, Success, Failure
 
@@ -45,7 +45,7 @@ class Movie:
 class OmdbMovieClient:
 
     def __init__(self):
-        application_config = ApplicationConfig.instance()
+        application_config = ApplicationConfigurationStore.instance()
         self.api_key = application_config.get_or_fail("OMDB_API_KEY")
         self.logger = logging.getLogger(__name__)
         self.base_url = application_config.get_or_fail("OMDB_URL")
