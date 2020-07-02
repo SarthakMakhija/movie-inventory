@@ -17,6 +17,6 @@ class Json:
 
     def deserialize_to(self, target: type) -> type:
         try:
-            return jsons.loads(self.__payload, target)
+            return jsons.load(self.__payload, target)
         except DeserializationError as ex:
             raise JsonDeserializationException.make_from(ex)

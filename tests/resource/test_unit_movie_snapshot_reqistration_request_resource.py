@@ -24,8 +24,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
             = empty_movie_snapshot_registration_response()
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         json='{"titles": ["3 idiots"]}',
-                                         content_type="application/json",
+                                         json={"titles": ["3 idiots"]},
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(HTTPStatus.CREATED, response.status_code)
@@ -37,8 +36,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
             = empty_movie_snapshot_registration_response()
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         json='{"titles": "3 idiots"}',
-                                         content_type="application/json",
+                                         json={"titles": "3 idiots"},
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(HTTPStatus.CREATED, response.status_code)
@@ -62,8 +60,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
             = MovieSnapshotsRegistrationResponse(registered_snapshots=[RegisteredSnapshot(120, "3 idiots")])
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         json='{"titles": "3 idiots"}',
-                                         content_type="application/json",
+                                         json={"titles": "3 idiots"},
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         expected = {'registered_snapshots': [{'id': 120, 'title': '3 idiots'}], 'registration_failure_titles': []}
@@ -77,8 +74,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
             = MovieSnapshotsRegistrationResponse(registered_snapshots=[], registration_failure_titles=["3 idiots"])
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         json='{"titles": "3 idiots"}',
-                                         content_type="application/json",
+                                         json={"titles": "3 idiots"},
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         expected = {'registered_snapshots': [], 'registration_failure_titles': ["3 idiots"]}
@@ -86,8 +82,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
 
     def test_should_return_Unauthorized_given_a_request_to_register_movie_snapshots_without_header(self):
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         json='{"titles": ["3 idiots"]}',
-                                         content_type="application/json")
+                                         json={"titles": ["3 idiots"]})
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
 
@@ -97,8 +92,7 @@ class MovieSnapshotsRegistrationRequestResource(unittest.TestCase):
         movie_snapshots_registration_service.return_value.register_snapshots_for.side_effect = Exception('Test')
 
         response = self.test_client.post("/movie-snapshots/registration-request",
-                                         json='{"titles": "3 idiots"}',
-                                         content_type="application/json",
+                                         json={"titles": "3 idiots"},
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         self.assertEqual(500, response.status_code)

@@ -20,7 +20,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
     @requests_mock.Mocker()
     def test_should_register_movie_snapshots_give_movie_titles(self, mock_request):
-        movie_titles = '{"titles": ["Jumanji", "3 idiots"]}'
+        movie_titles = {"titles": ["Jumanji", "3 idiots"]}
 
         mock_request.get(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
             {
@@ -42,7 +42,6 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
         response = self.test_client.post("/movie-snapshots/registration-request",
                                          json=movie_titles,
-                                         content_type="application/json",
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         snapshot_jumanji = MovieSnapshotsFixture.get_by_title("Jumanji")
@@ -57,7 +56,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
     @requests_mock.Mocker()
     def test_should_register_movie_snapshots_one_with_failure_give_movie_titles(self, mock_request):
-        movie_titles = '{"titles": ["Jumanji", "movie_which_fails_with_omdb"]}'
+        movie_titles = {"titles": ["Jumanji", "movie_which_fails_with_omdb"]}
 
         mock_request.get(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
             {
@@ -74,7 +73,6 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
         response = self.test_client.post("/movie-snapshots/registration-request",
                                          json=movie_titles,
-                                         content_type="application/json",
                                          headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         snapshot_jumanji = MovieSnapshotsFixture.get_by_title("Jumanji")
@@ -87,7 +85,7 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
     @requests_mock.Mocker()
     def test_should_publish_movie_snapshot_registered_event_for_registered_snapshots(self, mock_request):
-        movie_titles = '{"titles": ["Jumanji", "movie_which_fails_with_omdb"]}'
+        movie_titles = {"titles": ["Jumanji", "movie_which_fails_with_omdb"]}
 
         mock_request.get(f"http://www.omdbapi.com/?t=Jumanji&apikey={TestConfiguration.OMDB_API_KEY}", text=json.dumps(
             {
@@ -104,7 +102,6 @@ class MovieSnapshotsRegistrationRequestResourceIntegrationTest(unittest.TestCase
 
         self.test_client.post("/movie-snapshots/registration-request",
                               json=movie_titles,
-                              content_type="application/json",
                               headers=[("x-api-key", TestConfiguration.X_API_KEY)])
 
         snapshot_jumanji = MovieSnapshotsFixture.get_by_title("Jumanji")
